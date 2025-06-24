@@ -35,6 +35,26 @@ function ArtworkDetail() {
           <div className="artwork-detail-info">
             <h1>{artwork.title}</h1>
             
+            {artwork.culturalProperty && (
+              <div className="cultural-property-badge" style={{ 
+                backgroundColor: '#d4af37', 
+                color: 'white', 
+                padding: '0.5rem 1rem', 
+                borderRadius: '1rem', 
+                display: 'inline-block', 
+                fontSize: '0.9rem', 
+                fontWeight: '600', 
+                marginBottom: '1.5rem'
+              }}>
+                {artwork.culturalProperty}
+              </div>
+            )}
+            
+            <div className="info-item">
+              <span className="info-label">전시관:</span>
+              <span className="info-value">{artwork.museum}</span>
+            </div>
+            
             <div className="info-item">
               <span className="info-label">시대:</span>
               <span className="info-value">{artwork.period}</span>
@@ -50,9 +70,16 @@ function ArtworkDetail() {
               <span className="info-value">{artwork.material}</span>
             </div>
             
+            {artwork.dimensions && (
+              <div className="info-item">
+                <span className="info-label">크기:</span>
+                <span className="info-value">{artwork.dimensions}</span>
+              </div>
+            )}
+            
             <div className="info-item">
-              <span className="info-label">크기:</span>
-              <span className="info-value">{artwork.dimensions}</span>
+              <span className="info-label">소장지련번호:</span>
+              <span className="info-value">{artwork.inventoryNumber}</span>
             </div>
             
             <div className="artwork-description">

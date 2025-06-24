@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { artworks, categories, periods } from '../data/artworks'
+import { artworks, categories, periods, museums } from '../data/artworks'
 
 function Gallery() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('전체')
   const [selectedPeriod, setSelectedPeriod] = useState('전체')
+  const [selectedMuseum, setSelectedMuseum] = useState('전체')
 
   const filteredArtworks = artworks.filter((artwork) => {
     const matchesSearch = artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          artwork.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === '전체' || artwork.category === selectedCategory
     const matchesPeriod = selectedPeriod === '전체' || artwork.period.includes(selectedPeriod)
+    const matchesMuseum = selectedMuseum === '전체' || artwork.museum === selectedMuseum
     
-    return matchesSearch && matchesCategory && matchesPeriod
+    return matchesSearch && matchesCategory && matchesPeriod && matchesMuseum
   })
 
   return (
@@ -66,6 +68,21 @@ function Gallery() {
               ))}
             </div>
           </div>
+
+          <div className="filter-group">
+            <span style={{ marginRight: '1rem', fontWeight: '600' }}>전시관:</span>
+            <div className="filter-buttons">
+              {museums.map((museum) => (
+                <button
+                  key={museum}
+                  onClick={() => setSelectedMuseum(museum)}
+                  className={`filter-btn ${selectedMuseum === museum ? 'active' : ''}`}
+                >
+                  {museum}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -86,7 +103,12 @@ function Gallery() {
                 />
                 <div className="artwork-info">
                   <h3 className="artwork-title">{artwork.title}</h3>
-                  <p className="artwork-period">{artwork.period}</p>
+                  <p className="artwork-period">{artwork.period} · {artwork.museum}</p>
+                  {artwork.culturalProperty && (
+                    <p className="artwork-cultural-property" style={{ color: '#d4af37', fontWeight: '600', fontSize: '0.9rem' }}>
+                      {artwork.culturalProperty}
+                    </p>
+                  )}
                   <p className="artwork-description">
                     {artwork.description.length > 100 
                       ? `${artwork.description.substring(0, 100)}...` 
