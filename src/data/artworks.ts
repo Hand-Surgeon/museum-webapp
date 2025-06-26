@@ -1,16 +1,24 @@
 export interface Artwork {
   id: number
   title: string
+  titleEn?: string
   period: string
   category: string
   material: string
   dimensions: string
   description: string
+  detailedDescription?: string
+  historicalBackground?: string
+  artisticFeatures?: string
   imageUrl: string
   featured: boolean
   culturalProperty?: string
+  nationalTreasureNumber?: string
   museum: string
   inventoryNumber: string
+  era?: string
+  significance?: string
+  displayLocation?: string
 }
 
 export const artworks: Artwork[] = [
@@ -18,16 +26,23 @@ export const artworks: Artwork[] = [
   {
     id: 1,
     title: "빗살무늬토기",
+    titleEn: "Comb-pattern Pottery",
     period: "신석기시대",
+    era: "기원전 4000년경",
     category: "토기",
     material: "토기",
-    dimensions: "",
-    description: "한국 신석기시대를 대표하는 빗살무늬토기로, 빗 모양의 도구로 그어 넣은 문양이 특징입니다. 당시 사람들의 생활과 예술 감각을 보여주는 중요한 유물입니다.",
+    dimensions: "높이 30cm",
+    description: "한국 신석기시대를 대표하는 빗살무늬토기로, 빗 모양의 도구로 그어 넣은 문양이 특징입니다.",
+    detailedDescription: "우리나라 신석기 문화를 대표하는 유물이다. 기원전 4000년경 신석기 시대에 제작되었으며, 주로 음식을 저장하거나 조리하는 데 쓰인 토기이다. 표면에 빗 모양의 도구로 선과 점을 눌러 기하학적인 무늬를 새긴 것이 특징이다. 바닥이 평평한 형태로 강원도 춘천 교동의 동굴 주거지에서 출토되었다.",
+    historicalBackground: "당시에 이미 뛰어난 미적 감각과 토기 제작 기술을 보여주며, 신석기 시대 한반도 주민들의 생활상과 예술성을 잘 드러낸다.",
+    artisticFeatures: "붉은 흙으로 빚은 후 낮은 온도에서 구워낸 연질 토기로, 표면 전체에 빗살무늬를 빽빽이 새겨 장식했다. 이러한 정교한 즐문 패턴은 토기의 미적 아름다움과 함께 주술적 의미를 지닌 것으로 해석된다. 특히 선과 점으로 이뤄진 기하학적 무늬는 반복적이면서도 조화로워 당시 신석기인들의 미의식을 보여준다.",
     imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=600&fit=crop&auto=format&q=80",
     featured: true,
     culturalProperty: "",
     museum: "고고관",
-    inventoryNumber: "암사123"
+    inventoryNumber: "암사123",
+    significance: "신석기 문화의 광범위한 교류와 공통된 양식을 증명하며, 그 디자인은 이후 한민족 토기 발전의 토대가 되었다.",
+    displayLocation: "고고관 선사실"
   },
   {
     id: 2,
@@ -172,16 +187,24 @@ export const artworks: Artwork[] = [
   {
     id: 12,
     title: "백제금동대향로",
+    titleEn: "Baekje Golden Incense Burner",
     period: "백제",
+    era: "6세기 후반",
     category: "금속공예",
     material: "금동",
     dimensions: "높이 61.8cm",
     description: "백제의 뛰어난 공예기술을 보여주는 대표작으로, 산악과 신선을 표현한 정교한 조각이 특징인 국보급 향로입니다.",
+    detailedDescription: "백제의 뛰어난 공예기술과 예술성을 집약한 국보 제287호 유물로, 6세기 후반 백제 왕실에서 의례용으로 사용된 대형 금동 향로이다. 1993년 부여 능산리 절터에서 발굴되어 세상을 놀라게 했으며, 높이 61.8cm의 뚜껑, 몸체, 받침으로 구성되어 있다. 받침 부분에는 앞발을 치켜든 용 한 마리가 향로를 떠받들고 있고, 몸체는 연꽃 봉오리 모양의 둥근 향로로 천인(天人)들이 악기를 연주하며 노니는 이상 세계의 산수가 입체적으로 조각되어 있다.",
+    historicalBackground: "백제 사비시대의 왕실 불교의식에 쓰였던 향로로 추정된다. 향을 피워 부처님께 공양을 올리거나 의례 공간을 정화하는 데 사용되었을 것이다. 발굴 당시 향로 안에서 향을 피운 흔적인 그을음이 발견되어 실제 사용되었음을 알려준다. 백제 왕실은 중국 남조 및 중앙아시아와 교류하며 불교문화를 발전시켰는데, 이 향로의 양식은 백제의 독창성을 바탕으로 주변 문화 요소가 융합된 결과물이다.",
+    artisticFeatures: "주조, 단조, 선각, 투각 등 다양한 금속공예 기법이 총동원되어 만들어졌다. 전체가 금도금된 청동으로 이루어졌으며, 세부 조각이 매우 정교하다. 받침대의 용은 역동적으로 몸을 틀어 앞발로 향로를 들어올리는 모습이며, 비늘 하나하나까지 섬세하게 묘사되었다. 몸체는 커다란 연꽃 봉오리가 열려 그 안에 향을 피우는 구조인데, 연꽃 사이사이에 작은 산봉우리들이 솟아 있고 그 위에서 신선과 동자들이 거문고, 비파 등 악기를 연주하거나 책을 읽는 모습이 투각으로 표현되었다.",
     imageUrl: "https://images.unsplash.com/photo-1594736797933-d0dc1b4cc0f0?w=500&h=600&fit=crop&auto=format&q=80",
     featured: true,
     culturalProperty: "국보 287호",
+    nationalTreasureNumber: "287",
     museum: "고고관",
-    inventoryNumber: "부여5333"
+    inventoryNumber: "부여5333",
+    significance: "백제 금동대향로는 1400여 년 전 백제의 종교·예술·기술 수준을 보여주는 최고의 걸작으로, 금속공예사뿐 아니라 세계 미술사적으로도 손꼽히는 걸작품이다.",
+    displayLocation: "고고관 백제실"
   },
   {
     id: 13,
@@ -523,17 +546,25 @@ export const artworks: Artwork[] = [
   },
   {
     id: 37,
-    title: "반가사유상",
+    title: "금동미륵보살반가사유상",
+    titleEn: "Gilt-bronze Pensive Maitreya",
     period: "삼국시대",
+    era: "6~7세기",
     category: "불교조각",
     material: "금동",
-    dimensions: "",
+    dimensions: "높이 93.5cm",
     description: "삼국시대 불교조각의 걸작으로, 미륵보살이 반가부좌한 모습으로 깊은 사유에 잠긴 자세를 표현한 국보급 작품입니다.",
+    detailedDescription: "한쪽 다리를 다른 쪽 무릎 위에 올리고 손가락을 살며시 뺨에 댄 채 깊은 생각에 잠긴 모습의 반가사유 보살상이다. 국보 제83호로 지정되었으며, 높이 약 93cm의 거의 실물 크기 금동 불상으로 6~7세기 삼국 시대에 제작되었다. 이 보살상은 석가모니 태자가 인간의 생로병사의 고뇌를 숙고하는 모습을 형상화한 것으로, 사유에 잠긴 미륵보살의 자태를 묘사한다.",
+    historicalBackground: "반가사유상은 삼국 시대에 한반도에서 유행한 보살상 양식으로, 우리나라뿐 아니라 중국, 일본에도 전해졌지만 그 가운데에서도 국립중앙박물관 소장의 이 금동 반가사유상이 가장 크고 예술성이 뛰어난 작품이다. 1920년대 경주에서 발견되었다고 전하나 정확한 출토지는 미상이며, 머리에 세 개의 산 모양이 둥글게 솟은 삼산관(三山冠)을 쓰고 있어 삼산관 반가사유상이라고도 불린다.",
+    artisticFeatures: "온화하게 미소 짓는 얼굴과 균형 잡힌 신체 비례, 우아한 자세 등으로 한국 불교미술의 백미로 꼽힌다. 부드러운 미소를 머금은 자비로운 얼굴, 늘씬하면서도 균형 잡힌 신체, 자연스러운 자세 등 조형적으로 완벽에 가까운 아름다움을 보여준다. 옷은 얇은 법의를 걸쳤는데, 허리 아래로 흘러내린 옷주름이 유기적이고 자연스럽게 표현되어 금속임에도 부드러운 질감을 느끼게 한다.",
     imageUrl: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=500&h=600&fit=crop&auto=format&q=80",
     featured: true,
     culturalProperty: "국보 83호",
+    nationalTreasureNumber: "83",
     museum: "미술관",
-    inventoryNumber: "덕수 3312"
+    inventoryNumber: "덕수 3312",
+    significance: "조형성과 주조기술, 그리고 불교 철학적 깊이를 모두 갖춘 세계적인 걸작으로서, 사람들에게 깊은 감동을 준다.",
+    displayLocation: "미술관 불교조각실"
   },
   {
     id: 38,
@@ -1422,8 +1453,56 @@ export const artworks: Artwork[] = [
     culturalProperty: "",
     museum: "아시아관",
     inventoryNumber: ""
+  },
+  {
+    id: 101,
+    title: "청동 은입사 포류수금문 정병",
+    titleEn: "Bronze Ewer with Silver-Inlaid Waterside Scene",
+    period: "고려",
+    era: "12세기",
+    category: "금속공예",
+    material: "청동, 은입사",
+    dimensions: "높이 37.5cm",
+    description: "고려 12세기경 제작된 청동 은입사 정병으로, 국보 제92호로 지정된 한국 금속공예의 걸작입니다.",
+    detailedDescription: "고려 12세기경 제작된 높이 37.5cm의 청동 은입사 정병으로, 국보 제92호로 지정된 한국 금속공예의 걸작이다. 정병(淨甁)은 불교 의식에서 성수를 담는 휴대용 병이며, 이 작품에는 버들가지가 늘어진 물가 풍경과 물새 무늬가 섬세한 은실(銀絲)로 상감되어 있다.",
+    historicalBackground: "고려 시대에는 청자와 더불어 금속공예도 발달하여 불교 용구들이 많이 제작되었다. 이 청동 정병은 순수 식물성 기름을 바른 뒤 은실을 홈에 박아넣는 은입사 기법으로 장식되었다. 고려중기 귀족과 승려들은 정병에 향수나 깨끗한 물을 담아 불단에 올리는 공양을 했고, 때로는 여행 시 휴대하기도 했다.",
+    artisticFeatures: "형태와 장식의 조화가 뛰어나다. 병의 형태는 어깨가 넓고 몸통이 밑으로 갈수록 좁아지는 곡선형 병으로, 비례가 풍만하고 우아하다. 어깨와 굽 가까이에는 연꽃과 덩굴무늬 띠를 둘러 장식했고, 몸통 중앙에 은실로 버드나무와 갈대 숲, 오리 두 마리, 연꽃잎 등을 상감하여 마치 수묵화 같은 풍경을 표현했다.",
+    imageUrl: "https://images.unsplash.com/photo-1594736797933-d0dc1b4cc0f0?w=500&h=600&fit=crop",
+    featured: true,
+    culturalProperty: "국보 92호",
+    nationalTreasureNumber: "92",
+    museum: "미술관",
+    inventoryNumber: "신수2784",
+    significance: "디자인과 기능미, 그리고 기법적인 완성도가 높아 한국 금속공예의 백미로 꼽히며, 고려의 아름다움을 전하는 국보로서 손색이 없다.",
+    displayLocation: "미술관 고려실"
   }
 ]
+
+// 문화재 등급별 분류
+export const culturalPropertyGrades = [
+  "전체",
+  "국보",
+  "보물",
+  "시도유형문화재",
+  "일반"
+] as const
+
+// 시대별 분류 (상세)
+export const detailedPeriods = [
+  "전체",
+  "구석기시대",
+  "신석기시대", 
+  "청동기시대",
+  "초기철기시대",
+  "원삼국시대",
+  "삼국시대",
+  "통일신라",
+  "고려",
+  "조선전기",
+  "조선후기",
+  "대한제국",
+  "근현대"
+] as const
 
 export const categories = [
   "전체", 

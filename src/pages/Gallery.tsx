@@ -1,29 +1,50 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { artworks, categories, periods, museums } from '../data/artworks'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { artworks, categories, periods, museums, culturalPropertyGrades, detailedPeriods } from '../data/artworks'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function Gallery() {
+  const { t } = useLanguage()
+  const [searchParams, setSearchParams] = useSearchParams()
+  
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('전체')
   const [selectedPeriod, setSelectedPeriod] = useState('전체')
   const [selectedMuseum, setSelectedMuseum] = useState('전체')
+  const [selectedGrade, setSelectedGrade] = useState('전체')
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
+
+  // URL 파라미터에서 초기값 설정
+  useEffect(() => {
+    const museum = searchParams.get('museum')
+    if (museum && museums.includes(museum)) {
+      setSelectedMuseum(museum)
+    }
+  }, [searchParams])
 
   const filteredArtworks = artworks.filter((artwork) => {
     const matchesSearch = artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         artwork.description.toLowerCase().includes(searchTerm.toLowerCase())
+                         artwork.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (artwork.detailedDescription && artwork.detailedDescription.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                         (artwork.titleEn && artwork.titleEn.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesCategory = selectedCategory === '전체' || artwork.category === selectedCategory
     const matchesPeriod = selectedPeriod === '전체' || artwork.period.includes(selectedPeriod)
     const matchesMuseum = selectedMuseum === '전체' || artwork.museum === selectedMuseum
+    const matchesGrade = selectedGrade === '전체' || 
+                        (selectedGrade === '국보' && artwork.culturalProperty?.includes('국보')) ||
+                        (selectedGrade === '보물' && artwork.culturalProperty?.includes('보물')) ||
+                        (selectedGrade === '시도유형문화재' && artwork.culturalProperty?.includes('시도유형문화재')) ||
+                        (selectedGrade === '일반' && (!artwork.culturalProperty || artwork.culturalProperty === ''))
     
-    return matchesSearch && matchesCategory && matchesPeriod && matchesMuseum
+    return matchesSearch && matchesCategory && matchesPeriod && matchesMuseum && matchesGrade
   })
 
   return (
     <div>
       <div className="gallery-header">
         <div className="container">
-          <h1 className="gallery-title">소장품</h1>
-          <p>국립중앙박물관의 귀중한 문화유산을 감상해보세요</p>
+          <h1 className="gallery-title">{t('gallery.title')}</h1>
+          <p>{t('gallery.description')}</p>
         </div>
       </div>
 
@@ -32,7 +53,7 @@ function Gallery() {
           <div className="filter-group">
             <input
               type="text"
-              placeholder="작품명이나 설명으로 검색..."
+              placeholder={t('gallery.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -40,7 +61,7 @@ function Gallery() {
           </div>
           
           <div className="filter-group">
-            <span style={{ marginRight: '1rem', fontWeight: '600' }}>분류:</span>
+            <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.category')}:</span>
             <div className="filter-buttons">
               {categories.map((category) => (
                 <button
@@ -55,7 +76,7 @@ function Gallery() {
           </div>
 
           <div className="filter-group">
-            <span style={{ marginRight: '1rem', fontWeight: '600' }}>시대:</span>
+            <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.period')}:</span>
             <div className="filter-buttons">
               {periods.map((period) => (
                 <button
@@ -70,7 +91,7 @@ function Gallery() {
           </div>
 
           <div className="filter-group">
-            <span style={{ marginRight: '1rem', fontWeight: '600' }}>전시관:</span>
+            <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.museum')}:</span>
             <div className="filter-buttons">
               {museums.map((museum) => (
                 <button
@@ -83,11 +104,92 @@ function Gallery() {
               ))}
             </div>
           </div>
+
+          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+            <button 
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className="btn btn-secondary"
+              style={{ marginBottom: '1rem' }}
+            >
+              {showAdvancedFilters ? t('gallery.hideAdvanced') : t('gallery.showAdvanced')}
+            </button>
+          </div>
+
+          {showAdvancedFilters && (
+            <div style={{ backgroundColor: '#f8f9fa', padding: '1.5rem', borderRadius: '0.5rem', marginTop: '1rem' }}>
+              <div className="filter-group">
+                <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.culturalGrade')}:</span>
+                <div className="filter-buttons">
+                  {culturalPropertyGrades.map((grade) => (
+                    <button
+                      key={grade}
+                      onClick={() => setSelectedGrade(grade)}
+                      className={`filter-btn ${selectedGrade === grade ? 'active' : ''}`}
+                    >
+                      {grade}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="filter-group" style={{ marginTop: '1rem' }}>
+                <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.detailedPeriod')}:</span>
+                <div className="filter-buttons">
+                  {detailedPeriods.map((period) => (
+                    <button
+                      key={period}
+                      onClick={() => setSelectedPeriod(period)}
+                      className={`filter-btn ${selectedPeriod === period ? 'active' : ''}`}
+                    >
+                      {period}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
+                <p><strong>{t('gallery.filterHelp')}:</strong></p>
+                <ul style={{ marginLeft: '1rem', marginTop: '0.5rem' }}>
+                  <li>{t('gallery.nationalTreasure')}: 최고 등급의 문화재</li>
+                  <li>{t('gallery.treasure')}: 중요한 문화재</li>
+                  <li>{t('gallery.general')}: 일반 소장품</li>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="gallery-content">
         <div className="container">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '0.5rem' }}>
+            <div>
+              <span style={{ fontWeight: '600', fontSize: '1.1rem' }}>
+                {t('gallery.totalWorks').replace('{count}', filteredArtworks.length.toString())}
+              </span>
+              {(selectedCategory !== '전체' || selectedPeriod !== '전체' || selectedMuseum !== '전체' || selectedGrade !== '전체' || searchTerm) && (
+                <span style={{ marginLeft: '1rem', color: '#666' }}>
+                  ({t('gallery.filtered')})
+                </span>
+              )}
+            </div>
+            {(selectedCategory !== '전체' || selectedPeriod !== '전체' || selectedMuseum !== '전체' || selectedGrade !== '전체' || searchTerm) && (
+              <button 
+                onClick={() => {
+                  setSearchTerm('')
+                  setSelectedCategory('전체')
+                  setSelectedPeriod('전체')
+                  setSelectedMuseum('전체')
+                  setSelectedGrade('전체')
+                }}
+                className="btn btn-outline-secondary"
+                style={{ fontSize: '0.9rem' }}
+              >
+                {t('gallery.resetFilters')}
+              </button>
+            )}
+          </div>
+
           <div className="artwork-grid">
             {filteredArtworks.map((artwork) => (
               <Link 
@@ -102,13 +204,27 @@ function Gallery() {
                   className="artwork-image"
                 />
                 <div className="artwork-info">
-                  <h3 className="artwork-title">{artwork.title}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                    <h3 className="artwork-title" style={{ margin: 0, flex: 1 }}>{artwork.title}</h3>
+                    {artwork.culturalProperty && (
+                      <span style={{
+                        backgroundColor: artwork.culturalProperty.includes('국보') ? '#dc3545' : 
+                                       artwork.culturalProperty.includes('보물') ? '#fd7e14' : '#6c757d',
+                        color: 'white',
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '1rem',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        marginLeft: '0.5rem',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {artwork.culturalProperty.includes('국보') ? '국보' : 
+                         artwork.culturalProperty.includes('보물') ? '보물' : 
+                         artwork.culturalProperty}
+                      </span>
+                    )}
+                  </div>
                   <p className="artwork-period">{artwork.period} · {artwork.museum}</p>
-                  {artwork.culturalProperty && (
-                    <p className="artwork-cultural-property" style={{ color: '#d4af37', fontWeight: '600', fontSize: '0.9rem' }}>
-                      {artwork.culturalProperty}
-                    </p>
-                  )}
                   <p className="artwork-description">
                     {artwork.description.length > 100 
                       ? `${artwork.description.substring(0, 100)}...` 
@@ -121,7 +237,7 @@ function Gallery() {
           
           {filteredArtworks.length === 0 && (
             <div style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
-              <p>검색 조건에 맞는 작품이 없습니다.</p>
+              <p>{t('gallery.noResults')}</p>
             </div>
           )}
         </div>

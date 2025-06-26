@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageSelector from './LanguageSelector'
 
 function Header() {
+  const { t } = useLanguage()
+
   return (
     <header className="header">
       <div className="container">
         <div className="header-content">
           <Link to="/" className="logo">
-            국립중앙박물관
+            {t('header.title')}
           </Link>
-          <nav>
+          <nav className="nav-section">
             <ul className="nav-links">
-              <li><Link to="/">홈</Link></li>
-              <li><Link to="/gallery">소장품</Link></li>
-              <li><a href="#about">관람안내</a></li>
-              <li><a href="#exhibitions">전시</a></li>
-              <li><a href="#programs">교육</a></li>
+              <li><Link to="/">{t('navigation.home')}</Link></li>
+              <li><Link to="/gallery">{t('navigation.gallery')}</Link></li>
+              <li><a href="#about">{t('navigation.about')}</a></li>
             </ul>
+            <LanguageSelector />
           </nav>
         </div>
       </div>

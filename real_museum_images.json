@@ -1,0 +1,170 @@
+{
+  "successful": [],
+  "failed": [
+    {
+      "artwork": {
+        "id": 1,
+        "title": "빗살무늬토기",
+        "inventory": "암사123"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 2,
+        "title": "요령식동검",
+        "inventory": "본관11377"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 3,
+        "title": "산수봉황무늬 벽돌",
+        "inventory": "본관13972"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 4,
+        "title": "귀걸이",
+        "inventory": "본관6255"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 5,
+        "title": "주먹도끼",
+        "inventory": "서울대22"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 8,
+        "title": "방울",
+        "inventory": "신수2580"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 11,
+        "title": "관꽂이",
+        "inventory": "공주633"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 12,
+        "title": "백제금동대향로",
+        "inventory": "부여5333"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 14,
+        "title": "금관",
+        "inventory": "황북9310"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 15,
+        "title": "말탄사람토기",
+        "inventory": "본관9705"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 20,
+        "title": "미수허목이 쓴 삼척 동해비의 원고",
+        "inventory": "신수10610"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 25,
+        "title": "김홍도 풍속도첩",
+        "inventory": "본관6504"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 37,
+        "title": "반가사유상",
+        "inventory": "덕수 3312"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 38,
+        "title": "연가칠년명금동불입상",
+        "inventory": "신수 853"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 43,
+        "title": "청동은입사물가풍경무늬정병",
+        "inventory": "본관02426"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 45,
+        "title": "청자 참외 모양 병",
+        "inventory": "본관4254"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 53,
+        "title": "분청사기 용무늬 항아리",
+        "inventory": "덕수2411"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 57,
+        "title": "백자 매화 새무늬 항아리",
+        "inventory": "신수 4522"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 74,
+        "title": "무구정광대다라니경",
+        "inventory": "기탁 56"
+      },
+      "error": "검색 결과 없음"
+    },
+    {
+      "artwork": {
+        "id": 79,
+        "title": "이성계호적",
+        "inventory": "신수 6267"
+      },
+      "error": "검색 결과 없음"
+    }
+  ],
+  "summary": {
+    "total": 20,
+    "success": 0,
+    "failed": 20
+  }
+}
