@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { artworks, museums } from '../data/artworks'
+import { artworks, museums } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
 
 function Home() {

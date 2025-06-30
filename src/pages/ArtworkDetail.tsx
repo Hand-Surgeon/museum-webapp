@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { artworks } from '../data/artworks'
+import { artworks } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
 
 function ArtworkDetail() {
