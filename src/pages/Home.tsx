@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
-import { artworks, museums } from '../data'
-import { useLanguage } from '../contexts/LanguageContext'
+import { Link } from 'react-router-dom';
+import { artworks, museums } from '../data';
+import { useLanguage } from '../contexts/LanguageContext';
+import ArtworkGrid from '../components/ArtworkGrid';
+import './Home.css';
 
 function Home() {
-  const { t } = useLanguage()
-  const featuredArtworks = artworks.filter(artwork => artwork.featured)
+  const { t } = useLanguage();
+  const featuredArtworks = artworks.filter(artwork => artwork.featured);
 
   const museumStats = museums.slice(1).map(museum => ({
     name: museum,
@@ -14,10 +16,10 @@ function Home() {
                    museum === '기증관' ? 'donationHall' :
                    museum === '역사관' ? 'historyHall' :
                    museum === '아시아관' ? 'asianArtHall' : museum
-  }))
+  }));
 
   return (
-    <div>
+    <div className="home-page">
       <section className="hero">
         <div className="container">
           <h1>{t('home.welcomeTitle')}</h1>
@@ -31,37 +33,8 @@ function Home() {
       <section className="featured-section">
         <div className="container">
           <h2 className="section-title">{t('home.featuredWorks')}</h2>
-          <div className="artwork-grid">
-            {featuredArtworks.slice(0, 6).map((artwork) => (
-              <Link 
-                key={artwork.id} 
-                to={`/artwork/${artwork.id}`}
-                className="artwork-card"
-                style={{ textDecoration: 'none' }}
-              >
-                <img 
-                  src={artwork.imageUrl} 
-                  alt={artwork.title}
-                  className="artwork-image"
-                />
-                <div className="artwork-info">
-                  <h3 className="artwork-title">{artwork.title}</h3>
-                  <p className="artwork-period">{artwork.period} · {artwork.museum}</p>
-                  {artwork.culturalProperty && (
-                    <p className="artwork-cultural-property" style={{ color: '#d4af37', fontWeight: '600', fontSize: '0.9rem' }}>
-                      {artwork.culturalProperty}
-                    </p>
-                  )}
-                  <p className="artwork-description">
-                    {artwork.description.length > 100 
-                      ? `${artwork.description.substring(0, 100)}...` 
-                      : artwork.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <ArtworkGrid artworks={featuredArtworks} limit={6} showTitle={false} />
+          <div className="view-all-link">
             <Link to="/gallery" className="btn btn-secondary">
               {t('home.viewAllWorks')}
             </Link>
@@ -78,12 +51,11 @@ function Home() {
                 key={museum.name}
                 to={`/gallery?museum=${encodeURIComponent(museum.name)}`}
                 className="museum-card"
-                style={{ textDecoration: 'none' }}
               >
                 <h3 className="museum-name">{t(`home.${museum.translationKey}`)}</h3>
-                <p className="museum-count">{museum.count}점</p>
+                <p className="museum-count">{t('gallery.results', { count: museum.count })}</p>
                 <p className="museum-description">
-                  {museum.name}의 귀중한 소장품을 만나보세요
+                  {t(`home.museumDescription.${museum.translationKey}`)}
                 </p>
               </Link>
             ))}
@@ -91,7 +63,7 @@ function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
