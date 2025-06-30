@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
-import { artworks } from '../data'
 import type { Artwork } from '../data'
+import { applyAllFilters } from '../utils/artworkFilters'
 
 interface FilterState {
   searchTerm: string
@@ -27,28 +27,19 @@ const initialFilterState: FilterState = {
   selectedGrade: '전체'
 }
 
-export const useArtworkFilter = () => {
+export const useArtworkFilter = (artworks: Artwork[]) => {
   const [filters, setFilters] = useState<FilterState>(initialFilterState)
 
   const filteredArtworks = useMemo(() => {
-    return artworks.filter((artwork: Artwork) => {
-      const matchesSearch = artwork.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-                           artwork.description.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-                           (artwork.detailedDescription && artwork.detailedDescription.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
-                           (artwork.titleEn && artwork.titleEn.toLowerCase().includes(filters.searchTerm.toLowerCase()))
-      
-      const matchesCategory = filters.selectedCategory === '전체' || artwork.category === filters.selectedCategory
-      const matchesPeriod = filters.selectedPeriod === '전체' || artwork.period.includes(filters.selectedPeriod)
-      const matchesMuseum = filters.selectedMuseum === '전체' || artwork.museum === filters.selectedMuseum
-      const matchesGrade = filters.selectedGrade === '전체' || 
-                          (filters.selectedGrade === '국보' && artwork.culturalProperty?.includes('국보')) ||
-                          (filters.selectedGrade === '보물' && artwork.culturalProperty?.includes('보물')) ||
-                          (filters.selectedGrade === '시도유형문화재' && artwork.culturalProperty?.includes('시도유형문화재')) ||
-                          (filters.selectedGrade === '일반' && (!artwork.culturalProperty || artwork.culturalProperty === ''))
-      
-      return matchesSearch && matchesCategory && matchesPeriod && matchesMuseum && matchesGrade
-    })
-  }, [filters])
+    return applyAllFilters(artworks, filters)
+  }, [
+    artworks,
+    filters.searchTerm,
+    filters.selectedCategory, 
+    filters.selectedPeriod,
+    filters.selectedMuseum,
+    filters.selectedGrade
+  ])
 
   const actions: FilterActions = {
     setSearchTerm: (term: string) => setFilters(prev => ({ ...prev, searchTerm: term })),
@@ -62,6 +53,6 @@ export const useArtworkFilter = () => {
   return {
     filters,
     filteredArtworks,
-    ...actions
+    actions
   }
 }

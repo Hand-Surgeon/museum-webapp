@@ -1,0 +1,80 @@
+{
+  "common": {
+    "home": "홈",
+    "gallery": "소장품",
+    "search": "검색",
+    "filter": "필터",
+    "all": "전체",
+    "featured": "주요 작품",
+    "more": "더보기",
+    "back": "돌아가기",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "noResults": "검색 결과가 없습니다"
+  },
+  "header": {
+    "title": "국립중앙박물관",
+    "subtitle": "한국의 문화유산"
+  },
+  "navigation": {
+    "home": "홈",
+    "gallery": "소장품",
+    "about": "소개"
+  },
+  "home": {
+    "welcomeTitle": "국립중앙박물관에 오신 것을 환영합니다",
+    "welcomeDescription": "5,000년 한국 역사와 문화의 정수를 만나보세요",
+    "featuredWorks": "주요 소장품",
+    "viewAllWorks": "전체 소장품 보기",
+    "museumsTitle": "전시관 안내",
+    "archaeologyHall": "고고관",
+    "artHall": "미술관",
+    "donationHall": "기증관",
+    "historyHall": "역사관",
+    "asianArtHall": "아시아관"
+  },
+  "gallery": {
+    "title": "소장품",
+    "description": "국립중앙박물관의 귀중한 문화유산을 감상해보세요",
+    "searchPlaceholder": "작품명이나 설명으로 검색...",
+    "category": "분류",
+    "period": "시대",
+    "museum": "전시관",
+    "culturalGrade": "문화재 등급",
+    "detailedPeriod": "상세 시대",
+    "showAdvanced": "고급 필터 보기",
+    "hideAdvanced": "고급 필터 숨기기",
+    "filterHelp": "필터 도움말",
+    "nationalTreasure": "국보",
+    "treasure": "보물",
+    "general": "일반",
+    "totalWorks": "총 {count}점",
+    "filtered": "필터 적용됨",
+    "resetFilters": "필터 초기화",
+    "noResults": "검색 조건에 맞는 작품이 없습니다.",
+    "results": "총 {count}개 작품"
+  },
+  "artwork": {
+    "period": "시대",
+    "category": "분류",
+    "material": "재질",
+    "dimensions": "크기",
+    "museum": "전시관",
+    "inventoryNumber": "소장품번호",
+    "description": "작품 설명",
+    "detailedDescription": "상세 설명",
+    "historicalBackground": "역사적 배경",
+    "artisticFeatures": "예술적 특징",
+    "significance": "문화사적 의의",
+    "relatedWorks": "다른 소장품 보기",
+    "viewAllWorks": "전체 소장품 보기",
+    "backToGallery": "갤러리로 돌아가기",
+    "notFound": "작품을 찾을 수 없습니다"
+  },
+  "footer": {
+    "address": "서울특별시 용산구 서빙고로 137",
+    "phone": "02-2077-9000",
+    "website": "www.museum.go.kr",
+    "copyright": "© 2024 국립중앙박물관. All rights reserved."
+  }
+}

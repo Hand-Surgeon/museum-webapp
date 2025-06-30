@@ -1,30 +1,34 @@
 import { categories, periods, museums, culturalPropertyGrades } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
+import './FilterControls.css'
+
+interface FilterState {
+  searchTerm: string
+  selectedCategory: string
+  selectedPeriod: string
+  selectedMuseum: string
+  selectedGrade: string
+}
+
+interface FilterActions {
+  setSearchTerm: (term: string) => void
+  setSelectedCategory: (category: string) => void
+  setSelectedPeriod: (period: string) => void
+  setSelectedMuseum: (museum: string) => void
+  setSelectedGrade: (grade: string) => void
+  resetFilters: () => void
+}
 
 interface FilterControlsProps {
-  filters: {
-    searchTerm: string
-    selectedCategory: string
-    selectedPeriod: string
-    selectedMuseum: string
-    selectedGrade: string
-  }
-  onSearchChange: (term: string) => void
-  onCategoryChange: (category: string) => void
-  onPeriodChange: (period: string) => void
-  onMuseumChange: (museum: string) => void
-  onGradeChange: (grade: string) => void
+  filters: FilterState
+  actions: FilterActions
   showAdvancedFilters: boolean
   onToggleAdvancedFilters: () => void
 }
 
 export default function FilterControls({
   filters,
-  onSearchChange,
-  onCategoryChange,
-  onPeriodChange,
-  onMuseumChange,
-  onGradeChange,
+  actions,
   showAdvancedFilters,
   onToggleAdvancedFilters
 }: FilterControlsProps) {
@@ -38,18 +42,18 @@ export default function FilterControls({
             type="text"
             placeholder={t('gallery.searchPlaceholder')}
             value={filters.searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(e) => actions.setSearchTerm(e.target.value)}
             className="search-input"
           />
         </div>
         
         <div className="filter-group">
-          <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.category')}:</span>
+          <span className="filter-label">{t('gallery.category')}:</span>
           <div className="filter-buttons">
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => onCategoryChange(category)}
+                onClick={() => actions.setSelectedCategory(category)}
                 className={`filter-btn ${filters.selectedCategory === category ? 'active' : ''}`}
               >
                 {category}
@@ -59,12 +63,12 @@ export default function FilterControls({
         </div>
 
         <div className="filter-group">
-          <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.period')}:</span>
+          <span className="filter-label">{t('gallery.period')}:</span>
           <div className="filter-buttons">
             {periods.map((period) => (
               <button
                 key={period}
-                onClick={() => onPeriodChange(period)}
+                onClick={() => actions.setSelectedPeriod(period)}
                 className={`filter-btn ${filters.selectedPeriod === period ? 'active' : ''}`}
               >
                 {period}
@@ -74,12 +78,12 @@ export default function FilterControls({
         </div>
 
         <div className="filter-group">
-          <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.museum')}:</span>
+          <span className="filter-label">{t('gallery.museum')}:</span>
           <div className="filter-buttons">
             {museums.map((museum) => (
               <button
                 key={museum}
-                onClick={() => onMuseumChange(museum)}
+                onClick={() => actions.setSelectedMuseum(museum)}
                 className={`filter-btn ${filters.selectedMuseum === museum ? 'active' : ''}`}
               >
                 {museum}
@@ -98,12 +102,12 @@ export default function FilterControls({
         {showAdvancedFilters && (
           <div className="advanced-filters">
             <div className="filter-group">
-              <span style={{ marginRight: '1rem', fontWeight: '600' }}>{t('gallery.culturalGrade')}:</span>
+              <span className="filter-label">{t('gallery.culturalGrade')}:</span>
               <div className="filter-buttons">
                 {culturalPropertyGrades.map((grade) => (
                   <button
                     key={grade}
-                    onClick={() => onGradeChange(grade)}
+                    onClick={() => actions.setSelectedGrade(grade)}
                     className={`filter-btn ${filters.selectedGrade === grade ? 'active' : ''}`}
                   >
                     {grade}

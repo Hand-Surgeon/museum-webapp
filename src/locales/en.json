@@ -1,0 +1,80 @@
+{
+  "common": {
+    "home": "Home",
+    "gallery": "Collections",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "featured": "Featured Works",
+    "more": "More",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "noResults": "No search results found"
+  },
+  "header": {
+    "title": "National Museum of Korea",
+    "subtitle": "Korean Cultural Heritage"
+  },
+  "navigation": {
+    "home": "Home",
+    "gallery": "Collections",
+    "about": "About"
+  },
+  "home": {
+    "welcomeTitle": "Welcome to the National Museum of Korea",
+    "welcomeDescription": "Discover the essence of 5,000 years of Korean history and culture",
+    "featuredWorks": "Featured Collections",
+    "viewAllWorks": "View All Collections",
+    "museumsTitle": "Exhibition Halls",
+    "archaeologyHall": "Archaeology Hall",
+    "artHall": "Art Hall",
+    "donationHall": "Donation Hall",
+    "historyHall": "History Hall",
+    "asianArtHall": "Asian Art Hall"
+  },
+  "gallery": {
+    "title": "Collections",
+    "description": "Explore the precious cultural heritage of the National Museum of Korea",
+    "searchPlaceholder": "Search by artwork title or description...",
+    "category": "Category",
+    "period": "Period",
+    "museum": "Hall",
+    "culturalGrade": "Cultural Property Grade",
+    "detailedPeriod": "Detailed Period",
+    "showAdvanced": "Show Advanced Filters",
+    "hideAdvanced": "Hide Advanced Filters",
+    "filterHelp": "Filter Help",
+    "nationalTreasure": "National Treasure",
+    "treasure": "Treasure",
+    "general": "General",
+    "totalWorks": "Total {count} works",
+    "filtered": "Filtered",
+    "resetFilters": "Reset Filters",
+    "noResults": "No artworks match your search criteria.",
+    "results": "{count} artworks found"
+  },
+  "artwork": {
+    "period": "Period",
+    "category": "Category",
+    "material": "Material",
+    "dimensions": "Dimensions",
+    "museum": "Exhibition Hall",
+    "inventoryNumber": "Inventory Number",
+    "description": "Description",
+    "detailedDescription": "Detailed Description",
+    "historicalBackground": "Historical Background",
+    "artisticFeatures": "Artistic Features",
+    "significance": "Cultural Significance",
+    "relatedWorks": "View Other Collections",
+    "viewAllWorks": "View All Collections",
+    "backToGallery": "Back to Gallery",
+    "notFound": "Artwork not found"
+  },
+  "footer": {
+    "address": "137 Seobinggo-ro, Yongsan-gu, Seoul",
+    "phone": "02-2077-9000",
+    "website": "www.museum.go.kr",
+    "copyright": "© 2024 National Museum of Korea. All rights reserved."
+  }
+}

@@ -1,6 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
 import { artworks } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
+import InfoItem from '../components/InfoItem'
+import DescriptionSection from '../components/DescriptionSection'
+import './ArtworkDetail.css'
 
 function ArtworkDetail() {
   const { t } = useLanguage()
@@ -9,9 +12,9 @@ function ArtworkDetail() {
 
   if (!artwork) {
     return (
-      <div className="container" style={{ padding: '3rem 0', textAlign: 'center' }}>
+      <div className="container artwork-not-found">
         <h2>{t('artwork.notFound')}</h2>
-        <Link to="/gallery" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+        <Link to="/gallery" className="btn btn-primary back-button">
           {t('artwork.backToGallery')}
         </Link>
       </div>
@@ -21,7 +24,7 @@ function ArtworkDetail() {
   return (
     <div className="artwork-detail">
       <div className="container">
-        <Link to="/gallery" className="btn btn-secondary" style={{ marginBottom: '2rem' }}>
+        <Link to="/gallery" className="btn btn-secondary back-to-gallery">
           ← {t('artwork.backToGallery')}
         </Link>
         
@@ -38,92 +41,63 @@ function ArtworkDetail() {
             <h1>{artwork.title}</h1>
             
             {artwork.culturalProperty && (
-              <div className="cultural-property-badge" style={{ 
-                backgroundColor: '#d4af37', 
-                color: 'white', 
-                padding: '0.5rem 1rem', 
-                borderRadius: '1rem', 
-                display: 'inline-block', 
-                fontSize: '0.9rem', 
-                fontWeight: '600', 
-                marginBottom: '1.5rem'
-              }}>
+              <div className="cultural-property-badge">
                 {artwork.culturalProperty}
               </div>
             )}
             
-            <div className="info-item">
-              <span className="info-label">{t('artwork.museum')}:</span>
-              <span className="info-value">{artwork.museum}</span>
-            </div>
-            
-            <div className="info-item">
-              <span className="info-label">{t('artwork.period')}:</span>
-              <span className="info-value">{artwork.period}</span>
-            </div>
-            
-            <div className="info-item">
-              <span className="info-label">{t('artwork.category')}:</span>
-              <span className="info-value">{artwork.category}</span>
-            </div>
-            
-            <div className="info-item">
-              <span className="info-label">{t('artwork.material')}:</span>
-              <span className="info-value">{artwork.material}</span>
-            </div>
-            
+            <InfoItem label={t('artwork.museum')} value={artwork.museum} />
+            <InfoItem label={t('artwork.period')} value={artwork.period} />
+            <InfoItem label={t('artwork.category')} value={artwork.category} />
+            <InfoItem label={t('artwork.material')} value={artwork.material} />
             {artwork.dimensions && (
-              <div className="info-item">
-                <span className="info-label">{t('artwork.dimensions')}:</span>
-                <span className="info-value">{artwork.dimensions}</span>
-              </div>
+              <InfoItem label={t('artwork.dimensions')} value={artwork.dimensions} />
             )}
-            
-            <div className="info-item">
-              <span className="info-label">{t('artwork.inventoryNumber')}:</span>
-              <span className="info-value">{artwork.inventoryNumber}</span>
-            </div>
+            <InfoItem label={t('artwork.inventoryNumber')} value={artwork.inventoryNumber} />
             
             <div className="artwork-description">
-              <h3 style={{ marginBottom: '1rem', color: '#2c5530' }}>{t('artwork.description')}</h3>
+              <h3 className="description-title">{t('artwork.description')}</h3>
               <p>{artwork.description}</p>
               
               {artwork.detailedDescription && (
-                <div style={{ marginTop: '2rem' }}>
-                  <h4 style={{ marginBottom: '1rem', color: '#2c5530' }}>{t('artwork.detailedDescription')}</h4>
-                  <p style={{ lineHeight: '1.8' }}>{artwork.detailedDescription}</p>
-                </div>
+                <DescriptionSection 
+                  title={t('artwork.detailedDescription')} 
+                  content={artwork.detailedDescription} 
+                />
               )}
               
               {artwork.historicalBackground && (
-                <div style={{ marginTop: '2rem' }}>
-                  <h4 style={{ marginBottom: '1rem', color: '#2c5530' }}>{t('artwork.historicalBackground')}</h4>
-                  <p style={{ lineHeight: '1.8' }}>{artwork.historicalBackground}</p>
-                </div>
+                <DescriptionSection 
+                  title={t('artwork.historicalBackground')} 
+                  content={artwork.historicalBackground} 
+                />
               )}
               
               {artwork.artisticFeatures && (
-                <div style={{ marginTop: '2rem' }}>
-                  <h4 style={{ marginBottom: '1rem', color: '#2c5530' }}>{t('artwork.artisticFeatures')}</h4>
-                  <p style={{ lineHeight: '1.8' }}>{artwork.artisticFeatures}</p>
-                </div>
+                <DescriptionSection 
+                  title={t('artwork.artisticFeatures')} 
+                  content={artwork.artisticFeatures} 
+                />
               )}
               
               {artwork.significance && (
-                <div style={{ marginTop: '2rem' }}>
-                  <h4 style={{ marginBottom: '1rem', color: '#2c5530' }}>{t('artwork.significance')}</h4>
-                  <p style={{ lineHeight: '1.8', fontStyle: 'italic', backgroundColor: '#f8f9fa', padding: '1rem', borderRadius: '0.5rem' }}>{artwork.significance}</p>
-                </div>
+                <DescriptionSection 
+                  title={t('artwork.significance')} 
+                  content={artwork.significance} 
+                  isSignificance={true}
+                />
               )}
             </div>
           </div>
         </div>
         
-        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-          <h3 style={{ marginBottom: '2rem', color: '#2c5530' }}>{t('artwork.otherWorks')}</h3>
-          <Link to="/gallery" className="btn btn-primary">
-            {t('artwork.viewAllWorks')}
-          </Link>
+        <div className="related-works-section">
+          <h3 className="related-works-title">{t('artwork.relatedWorks')}</h3>
+          <div className="related-works-buttons">
+            <Link to="/gallery" className="btn btn-primary">
+              {t('artwork.viewAllWorks')}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

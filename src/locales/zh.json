@@ -1,0 +1,80 @@
+{
+  "common": {
+    "home": "首页",
+    "gallery": "藏品",
+    "search": "搜索",
+    "filter": "筛选",
+    "all": "全部",
+    "featured": "特色作品",
+    "more": "更多",
+    "back": "返回",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "noResults": "未找到搜索结果"
+  },
+  "header": {
+    "title": "韩国国立中央博物馆",
+    "subtitle": "韩国文化遗产"
+  },
+  "navigation": {
+    "home": "首页",
+    "gallery": "藏品",
+    "about": "关于"
+  },
+  "home": {
+    "welcomeTitle": "欢迎来到韩国国立中央博物馆",
+    "welcomeDescription": "探索5000年韩国历史文化精髓",
+    "featuredWorks": "特色藏品",
+    "viewAllWorks": "查看全部藏品",
+    "museumsTitle": "展厅导览",
+    "archaeologyHall": "考古馆",
+    "artHall": "美术馆",
+    "donationHall": "捐赠馆",
+    "historyHall": "历史馆",
+    "asianArtHall": "亚洲馆"
+  },
+  "gallery": {
+    "title": "藏品",
+    "description": "欣赏韩国国立中央博物馆的珍贵文化遗产",
+    "searchPlaceholder": "按作品名称或描述搜索...",
+    "category": "分类",
+    "period": "时代",
+    "museum": "展厅",
+    "culturalGrade": "文化财等级",
+    "detailedPeriod": "详细时代",
+    "showAdvanced": "显示高级筛选",
+    "hideAdvanced": "隐藏高级筛选",
+    "filterHelp": "筛选帮助",
+    "nationalTreasure": "国宝",
+    "treasure": "宝物",
+    "general": "一般",
+    "totalWorks": "共{count}件",
+    "filtered": "已筛选",
+    "resetFilters": "重置筛选",
+    "noResults": "未找到符合条件的作品",
+    "results": "找到{count}件作品"
+  },
+  "artwork": {
+    "period": "时代",
+    "category": "分类",
+    "material": "材质",
+    "dimensions": "尺寸",
+    "museum": "展厅",
+    "inventoryNumber": "藏品编号",
+    "description": "作品描述",
+    "detailedDescription": "详细描述",
+    "historicalBackground": "历史背景",
+    "artisticFeatures": "艺术特色",
+    "significance": "文化历史意义",
+    "relatedWorks": "查看其他藏品",
+    "viewAllWorks": "查看全部藏品",
+    "backToGallery": "返回画廊",
+    "notFound": "未找到作品"
+  },
+  "footer": {
+    "address": "首尔特别市龙山区西冰库路137号",
+    "phone": "02-2077-9000",
+    "website": "www.museum.go.kr",
+    "copyright": "© 2024 韩国国立中央博物馆. 版权所有."
+  }
+}

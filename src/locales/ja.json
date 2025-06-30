@@ -1,0 +1,80 @@
+{
+  "common": {
+    "home": "ホーム",
+    "gallery": "所蔵品",
+    "search": "検索",
+    "filter": "フィルター",
+    "all": "全て",
+    "featured": "注目作品",
+    "more": "詳細",
+    "back": "戻る",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "noResults": "検索結果がありません"
+  },
+  "header": {
+    "title": "韓国国立中央博物館",
+    "subtitle": "韓国の文化遺産"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "gallery": "所蔵品",
+    "about": "概要"
+  },
+  "home": {
+    "welcomeTitle": "韓国国立中央博物館へようこそ",
+    "welcomeDescription": "5,000年の韓国歴史と文化の精髄をご覧ください",
+    "featuredWorks": "主要所蔵品",
+    "viewAllWorks": "全所蔵品を見る",
+    "museumsTitle": "展示館案内",
+    "archaeologyHall": "考古館",
+    "artHall": "美術館",
+    "donationHall": "寄贈館",
+    "historyHall": "歴史館",
+    "asianArtHall": "アジア館"
+  },
+  "gallery": {
+    "title": "所蔵品",
+    "description": "韓国国立中央博物館の貴重な文化遺産をご鑑賞ください",
+    "searchPlaceholder": "作品名や説明で検索...",
+    "category": "分類",
+    "period": "時代",
+    "museum": "展示館",
+    "culturalGrade": "文化財等級",
+    "detailedPeriod": "詳細時代",
+    "showAdvanced": "詳細フィルターを表示",
+    "hideAdvanced": "詳細フィルターを非表示",
+    "filterHelp": "フィルターヘルプ",
+    "nationalTreasure": "国宝",
+    "treasure": "宝物",
+    "general": "一般",
+    "totalWorks": "計{count}点",
+    "filtered": "フィルター適用済み",
+    "resetFilters": "フィルターリセット",
+    "noResults": "検索条件に合う作品がありません",
+    "results": "{count}点の作品が見つかりました"
+  },
+  "artwork": {
+    "period": "時代",
+    "category": "分類",
+    "material": "材質",
+    "dimensions": "サイズ",
+    "museum": "展示館",
+    "inventoryNumber": "所蔵品番号",
+    "description": "作品説明",
+    "detailedDescription": "詳細説明",
+    "historicalBackground": "歴史的背景",
+    "artisticFeatures": "芸術的特徴",
+    "significance": "文化史的意義",
+    "relatedWorks": "他の所蔵品を見る",
+    "viewAllWorks": "全所蔵品を見る",
+    "backToGallery": "ギャラリーに戻る",
+    "notFound": "作品が見つかりません"
+  },
+  "footer": {
+    "address": "ソウル特別市龍山区西氷庫路137",
+    "phone": "02-2077-9000",
+    "website": "www.museum.go.kr",
+    "copyright": "© 2024 韓国国立中央博物館. All rights reserved."
+  }
+}
