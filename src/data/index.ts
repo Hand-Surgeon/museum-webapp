@@ -7,4 +7,4 @@ export {
   periods, 
   museums 
 } from './constants'
-export { default as artworks } from './artworks.json'
+export { artworksData as artworks } from './artworks-data'

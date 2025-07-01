@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Artwork } from '../data';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getImageUrl, handleImageError } from '../utils/imageUtils';
 import './ArtworkCard.css';
 
 interface ArtworkCardProps {
@@ -15,12 +16,10 @@ export default function ArtworkCard({ artwork }: ArtworkCardProps) {
       <Link to={`/artwork/${artwork.id}`}>
         <div className="artwork-image-wrapper">
           <img
-            src={artwork.imageUrl}
+            src={getImageUrl(artwork.imageUrl, artwork.category)}
             alt={artwork.title}
             loading="lazy"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder-artwork.jpg';
-            }}
+            onError={(e) => handleImageError(e, artwork.category)}
           />
           {artwork.featured && (
             <div className="featured-badge">{t('common.featured')}</div>

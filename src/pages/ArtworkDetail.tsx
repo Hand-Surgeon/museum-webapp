@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { artworks } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
+import { getImageUrl, handleImageError } from '../utils/imageUtils'
 import InfoItem from '../components/InfoItem'
 import DescriptionSection from '../components/DescriptionSection'
 import './ArtworkDetail.css'
@@ -31,9 +32,10 @@ function ArtworkDetail() {
         <div className="artwork-detail-content">
           <div>
             <img 
-              src={artwork.imageUrl} 
+              src={getImageUrl(artwork.imageUrl, artwork.category)} 
               alt={artwork.title}
               className="artwork-detail-image"
+              onError={(e) => handleImageError(e, artwork.category)}
             />
           </div>
           
