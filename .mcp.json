@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=sgvpiljodxoyghluvdhi"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_30238b1acd2e38a1aa824859a1727792f91c0208"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/youngseoklee/museum-webapp"],
+      "env": {}
+    }
+  }
+}

@@ -1,16 +1,41 @@
 import { Link } from 'react-router-dom';
-import { artworks, museums } from '../data';
+import { useState, useEffect } from 'react';
+import { museums } from '../data';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getFeaturedArtworks, getAllArtworks } from '../services/artworkService';
+import { Artwork } from '../data/types';
 import ArtworkGrid from '../components/ArtworkGrid';
 import './Home.css';
 
 function Home() {
   const { t } = useLanguage();
-  const featuredArtworks = artworks.filter(artwork => artwork.featured);
+  const [featuredArtworks, setFeaturedArtworks] = useState<Artwork[]>([]);
+  const [allArtworks, setAllArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoading(true);
+        const [featured, all] = await Promise.all([
+          getFeaturedArtworks(),
+          getAllArtworks()
+        ]);
+        setFeaturedArtworks(featured);
+        setAllArtworks(all);
+      } catch (error) {
+        console.error('Failed to load artworks:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadData();
+  }, []);
 
   const museumStats = museums.slice(1).map(museum => ({
     name: museum,
-    count: artworks.filter(artwork => artwork.museum === museum).length,
+    count: allArtworks.filter(artwork => artwork.museum === museum).length,
     translationKey: museum === '고고관' ? 'archaeologyHall' :
                    museum === '미술관' ? 'artHall' :
                    museum === '기증관' ? 'donationHall' :
@@ -33,7 +58,11 @@ function Home() {
       <section className="featured-section">
         <div className="container">
           <h2 className="section-title">{t('home.featuredWorks')}</h2>
-          <ArtworkGrid artworks={featuredArtworks} limit={6} showTitle={false} />
+          {loading ? (
+            <div className="loading">Loading...</div>
+          ) : (
+            <ArtworkGrid artworks={featuredArtworks} limit={6} showTitle={false} />
+          )}
           <div className="view-all-link">
             <Link to="/gallery" className="btn btn-secondary">
               {t('home.viewAllWorks')}

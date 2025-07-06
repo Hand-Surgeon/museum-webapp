@@ -1,45 +1,66 @@
 /**
- * Image utility functions for handling artwork images
+ * 안정적인 이미지 처리를 위한 유틸리티 함수들
  */
 
+// 카테고리별 로컬 플레이스홀더 이미지 매핑
+const getCategoryPlaceholder = (category: string): string => {
+  const categoryMap: Record<string, string> = {
+    '토기': './images/placeholder-pottery.svg',
+    '청동기': './images/placeholder-bronze.svg',
+    '석기': './images/placeholder-default.svg',
+    '건축부재': './images/placeholder-default.svg',
+    '장신구': './images/placeholder-bronze.svg',
+    '불상': './images/placeholder-default.svg',
+    '회화': './images/placeholder-default.svg',
+    '도자기': './images/placeholder-pottery.svg',
+    '서예': './images/placeholder-default.svg',
+    '조각': './images/placeholder-default.svg'
+  };
+  
+  return categoryMap[category] || './images/placeholder-default.svg';
+};
+
+// 메인 이미지 URL 처리 함수 - 안전한 로컬 이미지만 사용
 export const getImageUrl = (originalUrl: string, category: string): string => {
-  // If the original URL is not Unsplash, use it as is
-  if (!originalUrl.includes('unsplash.com')) {
+  // Wikipedia나 안정적인 도메인의 이미지만 허용
+  const trustedDomains = [
+    'upload.wikimedia.org',
+    'commons.wikimedia.org'
+  ];
+  
+  // 원본 URL이 신뢰할 수 있는 도메인인지 확인
+  const isTrustedUrl = trustedDomains.some(domain => originalUrl.includes(domain));
+  
+  if (isTrustedUrl && originalUrl.startsWith('http')) {
     return originalUrl;
   }
   
-  // For Unsplash URLs, create more reliable category-based fallbacks
-  const categoryImageMap: Record<string, string> = {
-    '토기': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=600&fit=crop&auto=format&q=80',
-    '청동기': 'https://images.unsplash.com/photo-1594736797933-d0dc1b4cc0f0?w=500&h=600&fit=crop&auto=format&q=80',
-    '석기': 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1deaa?w=500&h=600&fit=crop&auto=format&q=80',
-    '건축부재': 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=500&h=600&fit=crop&auto=format&q=80',
-    '장신구': 'https://images.unsplash.com/photo-1594736797933-d0dc1b4cc0f0?w=500&h=600&fit=crop&auto=format&q=80',
-    '불상': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=600&fit=crop&auto=format&q=80',
-    '회화': 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500&h=600&fit=crop&auto=format&q=80',
-    '도자기': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=600&fit=crop&auto=format&q=80',
-    '서예': 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500&h=600&fit=crop&auto=format&q=80',
-    '조각': 'https://images.unsplash.com/photo-1594736797933-d0dc1b4cc0f0?w=500&h=600&fit=crop&auto=format&q=80'
-  };
-  
-  return categoryImageMap[category] || originalUrl;
+  // 신뢰할 수 없는 URL이거나 외부 URL은 즉시 플레이스홀더 사용
+  return getCategoryPlaceholder(category);
 };
 
+// 이미지 로딩 실패 처리 함수
 export const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>, category: string) => {
   const img = event.currentTarget;
   
-  // If already showing placeholder, don't retry
-  if (img.src.includes('placeholder-artwork.svg')) {
+  // 이미 플레이스홀더 이미지를 보여주고 있다면 더 이상 시도하지 않음
+  if (img.src.includes('placeholder-') || img.src.includes('.svg')) {
+    console.warn(`이미지 로딩 실패: ${img.src}`);
     return;
   }
   
-  // Try category-based fallback first
-  const fallbackUrl = getImageUrl('', category);
-  if (img.src !== fallbackUrl && fallbackUrl) {
-    img.src = fallbackUrl;
-    return;
-  }
-  
-  // Final fallback to placeholder
-  img.src = '/placeholder-artwork.svg';
+  // 카테고리별 플레이스홀더로 즉시 대체
+  const placeholderUrl = getCategoryPlaceholder(category);
+  console.log(`이미지 로딩 실패, 플레이스홀더로 대체: ${img.src} -> ${placeholderUrl}`);
+  img.src = placeholderUrl;
+};
+
+// 이미지 로딩 상태 확인을 위한 유틸리티
+export const preloadImage = (url: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
 };
