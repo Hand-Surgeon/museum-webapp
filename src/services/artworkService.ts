@@ -1,141 +1,62 @@
-import { supabase } from '../lib/supabase'
 import { Artwork } from '../data/types'
+import { getArtworkRepository } from '../repositories'
+import {
+  GetAllArtworksUseCase,
+  GetArtworkByIdUseCase,
+  GetFeaturedArtworksUseCase,
+  GetArtworksByCategoryUseCase,
+  GetArtworksByMuseumUseCase,
+  GetArtworksByPeriodUseCase,
+  SearchArtworksUseCase,
+  FilterArtworksUseCase,
+  InvalidateArtworkCacheUseCase
+} from '../useCases/artworkUseCases'
 
-// 데이터베이스 필드명을 클라이언트 필드명으로 변환
-function transformArtworkFromDB(dbArtwork: any): Artwork {
-  return {
-    id: dbArtwork.id,
-    title: dbArtwork.title,
-    titleEn: dbArtwork.title_en,
-    period: dbArtwork.period,
-    category: dbArtwork.category,
-    material: dbArtwork.material,
-    dimensions: dbArtwork.dimensions || '',
-    description: dbArtwork.description,
-    detailedDescription: dbArtwork.detailed_description,
-    historicalBackground: dbArtwork.historical_background,
-    artisticFeatures: dbArtwork.artistic_features,
-    imageUrl: dbArtwork.image_url,
-    featured: dbArtwork.featured,
-    culturalProperty: dbArtwork.cultural_property,
-    nationalTreasureNumber: dbArtwork.national_treasure_number,
-    museum: dbArtwork.museum,
-    inventoryNumber: dbArtwork.inventory_number,
-    era: dbArtwork.era,
-    significance: dbArtwork.significance,
-    displayLocation: dbArtwork.display_location
-  }
-}
+// Use Case instances
+const repository = getArtworkRepository()
+const getAllArtworksUseCase = new GetAllArtworksUseCase(repository)
+const getArtworkByIdUseCase = new GetArtworkByIdUseCase(repository)
+const getFeaturedArtworksUseCase = new GetFeaturedArtworksUseCase(repository)
+const getArtworksByCategoryUseCase = new GetArtworksByCategoryUseCase(repository)
+const getArtworksByMuseumUseCase = new GetArtworksByMuseumUseCase(repository)
+const getArtworksByPeriodUseCase = new GetArtworksByPeriodUseCase(repository)
+const searchArtworksUseCase = new SearchArtworksUseCase(repository)
+const filterArtworksUseCase = new FilterArtworksUseCase(repository)
+const invalidateArtworkCacheUseCase = new InvalidateArtworkCacheUseCase()
 
 // 모든 작품 조회
 export async function getAllArtworks(): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching artworks:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return getAllArtworksUseCase.execute()
 }
 
 // 특정 작품 조회
 export async function getArtworkById(id: number): Promise<Artwork | null> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .eq('id', id)
-    .single()
-  
-  if (error) {
-    console.error('Error fetching artwork:', error)
-    return null
-  }
-  
-  return data ? transformArtworkFromDB(data) : null
+  return getArtworkByIdUseCase.execute(id)
 }
 
 // 주요 작품 조회
 export async function getFeaturedArtworks(): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .eq('featured', true)
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching featured artworks:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return getFeaturedArtworksUseCase.execute()
 }
 
 // 카테고리별 작품 조회
 export async function getArtworksByCategory(category: string): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .eq('category', category)
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching artworks by category:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return getArtworksByCategoryUseCase.execute(category)
 }
 
 // 박물관별 작품 조회
 export async function getArtworksByMuseum(museum: string): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .eq('museum', museum)
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching artworks by museum:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return getArtworksByMuseumUseCase.execute(museum)
 }
 
 // 시대별 작품 조회
 export async function getArtworksByPeriod(period: string): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .eq('period', period)
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching artworks by period:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return getArtworksByPeriodUseCase.execute(period)
 }
 
 // 검색 (제목, 설명 포함)
 export async function searchArtworks(query: string): Promise<Artwork[]> {
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .or(`title.ilike.%${query}%,description.ilike.%${query}%,detailed_description.ilike.%${query}%`)
-    .order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error searching artworks:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return searchArtworksUseCase.execute(query)
 }
 
 // 복합 필터 조회
@@ -146,36 +67,10 @@ export async function getArtworksByFilters(filters: {
   featured?: boolean
   search?: string
 }): Promise<Artwork[]> {
-  let query = supabase
-    .from('artworks')
-    .select('*')
-  
-  if (filters.category) {
-    query = query.eq('category', filters.category)
-  }
-  
-  if (filters.period) {
-    query = query.eq('period', filters.period)
-  }
-  
-  if (filters.museum) {
-    query = query.eq('museum', filters.museum)
-  }
-  
-  if (filters.featured !== undefined) {
-    query = query.eq('featured', filters.featured)
-  }
-  
-  if (filters.search) {
-    query = query.or(`title.ilike.%${filters.search}%,description.ilike.%${filters.search}%,detailed_description.ilike.%${filters.search}%`)
-  }
-  
-  const { data, error } = await query.order('id', { ascending: true })
-  
-  if (error) {
-    console.error('Error fetching artworks with filters:', error)
-    throw error
-  }
-  
-  return data ? data.map(transformArtworkFromDB) : []
+  return filterArtworksUseCase.execute(filters)
+}
+
+// 캐시 무효화 함수
+export function invalidateArtworkCache(key?: string): void {
+  return invalidateArtworkCacheUseCase.execute(key)
 }

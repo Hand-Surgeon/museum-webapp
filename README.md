@@ -8,7 +8,229 @@
 - **소장품 갤러리**: 100개의 대표 문화재 컬렉션
 - **작품 상세보기**: 각 작품의 상세 정보와 역사적 배경
 - **검색 및 필터링**: 분류, 시대별 작품 검색
+- **다국어 지원**: 한국어/영어 인터페이스
 - **반응형 디자인**: 모바일과 데스크톱 모두 지원
+- **접근성**: 스크린 리더 및 키보드 네비게이션 지원
+- **성능 최적화**: 가상 스크롤링 및 이미지 지연 로딩
+
+## 기술 스택
+
+### Frontend
+- **Framework**: React 18 + TypeScript
+- **Routing**: React Router DOM v6
+- **Build Tool**: Vite
+- **Styling**: CSS3 (반응형 디자인)
+- **Data**: Supabase / JSON (환경별 설정)
+- **Performance**: React.lazy, React.memo, react-window
+- **Testing**: Vitest + React Testing Library
+- **Linting**: ESLint + Prettier
+- **Git Hooks**: Husky + lint-staged
+
+### Architecture
+- **Clean Architecture**: Repository Pattern, Use Cases, Service Layer
+- **Type Safety**: TypeScript strict mode
+- **Security**: Input sanitization, CSP headers
+- **Accessibility**: WCAG 2.1 AA 준수
+
+## 설치 및 실행
+
+### 환경 설정
+
+```bash
+# 환경 변수 파일 생성
+cp .env.example .env
+
+# Supabase 사용 시
+VITE_DATA_SOURCE=supabase
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# 로컬 JSON 사용 시
+VITE_DATA_SOURCE=json
+```
+
+### 개발 환경
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 테스트 실행
+npm run test
+
+# 타입 체크
+npm run type-check
+
+# 린트 검사
+npm run lint
+
+# 코드 포맷팅
+npm run format
+```
+
+### 프로덕션 빌드
+
+```bash
+# 환경 변수 검증
+npm run validate:env
+
+# 프로덕션 빌드 (전체 검증 포함)
+npm run prod:build
+
+# 빌드만 실행
+npm run build:prod
+
+# 번들 사이즈 분석
+npm run build:analyze
+
+# 프리뷰
+npm run preview
+```
+
+### Docker 배포
+
+```bash
+# Docker 이미지 빌드
+npm run docker:build
+
+# Docker 컨테이너 실행
+npm run docker:run
+
+# Docker Compose 사용
+docker-compose up -d
+```
+
+## 프로젝트 구조
+
+```
+museum-webapp/
+├── src/
+│   ├── components/          # React 컴포넌트
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── ArtworkCard.tsx
+│   │   ├── FilterControls.tsx
+│   │   ├── ProgressiveImage.tsx
+│   │   └── VirtualizedArtworkGrid.tsx
+│   ├── pages/              # 페이지 컴포넌트
+│   │   ├── Home.tsx
+│   │   ├── Gallery.tsx
+│   │   └── ArtworkDetail.tsx
+│   ├── repositories/       # 데이터 접근 레이어
+│   │   ├── artworkRepository.ts
+│   │   ├── localArtworkRepository.ts
+│   │   └── supabaseArtworkRepository.ts
+│   ├── services/           # 비즈니스 로직
+│   │   └── artworkService.ts
+│   ├── hooks/              # 커스텀 훅
+│   │   └── useArtworkFilter.ts
+│   ├── utils/              # 유틸리티 함수
+│   │   └── sanitize.ts
+│   ├── types/              # TypeScript 타입 정의
+│   │   └── database.ts
+│   ├── config/             # 설정 파일
+│   │   └── dataSource.ts
+│   ├── locales/            # 다국어 파일
+│   │   ├── ko.json
+│   │   └── en.json
+│   ├── data/               # 로컬 데이터
+│   │   └── artworks.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── public/
+├── scripts/                # 스크립트 파일
+│   ├── validate-env.js
+│   └── build-prod.sh
+├── tests/                  # 테스트 파일
+├── .github/                # GitHub Actions
+│   └── workflows/
+│       └── ci.yml
+├── nginx.conf              # Nginx 설정
+├── Dockerfile              # Docker 설정
+├── docker-compose.yml      # Docker Compose 설정
+├── vercel.json             # Vercel 배포 설정
+├── netlify.toml            # Netlify 배포 설정
+├── vite.config.ts          # Vite 설정
+├── tsconfig.json           # TypeScript 설정
+├── .eslintrc.json          # ESLint 설정
+├── .prettierrc             # Prettier 설정
+└── package.json
+```
+
+## 배포 옵션
+
+### Vercel
+```bash
+# Vercel CLI 설치
+npm i -g vercel
+
+# 배포
+vercel
+```
+
+### Netlify
+```bash
+# Netlify CLI 설치
+npm i -g netlify-cli
+
+# 배포
+netlify deploy --prod
+```
+
+### Docker
+```bash
+# 이미지 빌드 및 실행
+docker build -t museum-webapp .
+docker run -p 80:80 museum-webapp
+```
+
+### 전통 호스팅
+1. `npm run build:prod` 실행
+2. `dist/` 폴더의 내용을 웹 서버에 업로드
+3. 제공된 `nginx.conf` 설정 적용
+
+## 성능 최적화
+
+- **코드 분할**: React.lazy와 Suspense를 사용한 라우트별 분할
+- **번들 최적화**: Vite의 수동 청크 설정 (vendor, supabase, utils)
+- **이미지 최적화**: ProgressiveImage 컴포넌트로 점진적 로딩
+- **가상 스크롤링**: 100개 이상의 아이템일 때 자동 적용
+- **메모이제이션**: React.memo와 useMemo 활용
+- **캐싱 전략**: 정적 자산에 대한 장기 캐싱
+
+## 테스트
+
+```bash
+# 단위 테스트 실행
+npm run test
+
+# 커버리지 리포트
+npm run test:coverage
+
+# 감시 모드
+npm run test -- --watch
+```
+
+## 개발 가이드
+
+### 커밋 메시지 규칙
+- `feat:` 새로운 기능
+- `fix:` 버그 수정
+- `docs:` 문서 변경
+- `style:` 코드 포맷팅
+- `refactor:` 리팩토링
+- `test:` 테스트 추가/수정
+- `chore:` 빌드 설정 등
+
+### 브랜치 전략
+- `main`: 프로덕션 브랜치
+- `develop`: 개발 브랜치
+- `feature/*`: 기능 개발
+- `hotfix/*`: 긴급 수정
 
 ## 소장품 컬렉션
 
@@ -27,74 +249,16 @@
 - **전적류**: 훈민정음, 조선왕조실록 등 (8개)
 - **기타**: 나전칠기, 토기, 유리공예 등
 
-## 기술 스택
-
-- **Frontend**: React 18 + TypeScript
-- **Routing**: React Router DOM v6
-- **Build Tool**: Vite
-- **Styling**: CSS3 (반응형 디자인)
-- **이미지**: Unsplash API 활용
-
-## 주요 대표작품
-
-1. **청자 상감모란문 매병** (고려 12~13세기) - 고려청자의 걸작
-2. **금동미륵보살반가사유상** (삼국시대 6~7세기) - 한국 불교조각의 정수
-3. **백자달항아리** (조선 18~19세기) - 조선 백자의 대표작
-4. **훈민정음 해례본** (조선 1446년) - 유네스코 세계기록유산
-5. **금관총 금관** (신라 5~6세기) - 신라 금속공예의 정점
-6. **분청사기 박지철화모란문 항아리** (조선 15세기) - 조선 도자 예술
-
-## 설치 및 실행
-
-```bash
-# 의존성 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
-
-# 빌드
-npm run build
-
-# 프리뷰
-npm run preview
-```
-
-## 프로젝트 구조
-
-```
-museum-webapp/
-├── src/
-│   ├── components/          # React 컴포넌트
-│   │   ├── Header.tsx
-│   │   └── Footer.tsx
-│   ├── pages/              # 페이지 컴포넌트
-│   │   ├── Home.tsx
-│   │   ├── Gallery.tsx
-│   │   └── ArtworkDetail.tsx
-│   ├── data/               # 데이터 파일
-│   │   └── artworks.ts     # 100개 작품 데이터
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── public/
-├── index.html
-├── package.json
-├── vite.config.ts
-└── tsconfig.json
-```
-
-## 특징
-
-- **교육적 가치**: 한국 문화재에 대한 상세한 설명과 역사적 맥락 제공
-- **사용자 친화적**: 직관적인 네비게이션과 검색 기능
-- **문화적 의미**: 전통 한국 미학을 현대적 디자인으로 재해석
-- **접근성**: 반응형 디자인으로 다양한 디바이스에서 접근 가능
-
 ## 기여하기
 
 이 프로젝트는 한국 문화재의 디지털 보존과 교육을 목적으로 제작되었습니다. 
 문화재 정보의 정확성이나 추가 기능에 대한 제안을 환영합니다.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 라이선스
 

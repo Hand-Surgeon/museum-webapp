@@ -1,0 +1,49 @@
+.virtualized-grid-container {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.virtualized-artwork-grid {
+  margin: 0 auto;
+}
+
+.virtualized-artwork-grid > div {
+  position: relative;
+}
+
+/* 스크롤바 스타일링 */
+.virtualized-artwork-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.virtualized-artwork-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.virtualized-artwork-grid::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.virtualized-artwork-grid::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.results-info {
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.no-results p {
+  font-size: 1.1rem;
+  margin: 0;
+}

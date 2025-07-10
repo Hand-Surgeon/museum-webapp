@@ -76,5 +76,33 @@
     "phone": "02-2077-9000",
     "website": "www.museum.go.kr",
     "copyright": "© 2024 National Museum of Korea. All rights reserved."
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "skipToNavigation": "Skip to navigation",
+    "skipToFooter": "Skip to footer",
+    "backToTop": "Back to top",
+    "closeModal": "Close modal",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "imageLoading": "Image loading",
+    "imageError": "Unable to load image",
+    "languageSelector": "Language selector",
+    "searchButton": "Search button",
+    "filterButton": "Filter button",
+    "clearSearch": "Clear search",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "loadingContent": "Loading content",
+    "errorOccurred": "An error occurred. Please try again.",
+    "pageLoaded": "Page loaded",
+    "navigationMenu": "Navigation menu",
+    "mainContent": "Main content",
+    "footerContent": "Footer content"
   }
 }

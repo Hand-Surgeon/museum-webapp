@@ -1,0 +1,95 @@
+.performance-indicator {
+  position: fixed;
+  z-index: 9999;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.performance-indicator.top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.performance-indicator.top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.performance-indicator.bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.performance-indicator.bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.performance-toggle {
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.performance-toggle:hover {
+  transform: scale(1.1);
+}
+
+.performance-metrics {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.performance-metrics h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 5px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  gap: 5px;
+}
+
+.metric-name {
+  font-weight: bold;
+  min-width: 50px;
+}
+
+.metric-value {
+  font-weight: bold;
+  min-width: 60px;
+  text-align: right;
+}
+
+.metric-rating {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* Hide in production */
+@media print {
+  .performance-indicator {
+    display: none;
+  }
+}

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { categories, periods, museums, culturalPropertyGrades } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
 import './FilterControls.css'
@@ -26,7 +27,7 @@ interface FilterControlsProps {
   onToggleAdvancedFilters: () => void
 }
 
-export default function FilterControls({
+function FilterControls({
   filters,
   actions,
   showAdvancedFilters,
@@ -35,15 +36,20 @@ export default function FilterControls({
   const { t } = useLanguage()
 
   return (
-    <div className="search-filters">
+    <div className="search-filters" role="search" aria-label={t('gallery.filterControls')}>
       <div className="container">
         <div className="filter-group">
+          <label htmlFor="artwork-search" className="visually-hidden">
+            {t('gallery.searchLabel')}
+          </label>
           <input
-            type="text"
+            id="artwork-search"
+            type="search"
             placeholder={t('gallery.searchPlaceholder')}
             value={filters.searchTerm}
             onChange={(e) => actions.setSearchTerm(e.target.value)}
             className="search-input"
+            aria-label={t('gallery.searchPlaceholder')}
           />
         </div>
         
@@ -121,3 +127,5 @@ export default function FilterControls({
     </div>
   )
 }
+
+export default memo(FilterControls)

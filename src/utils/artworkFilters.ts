@@ -1,10 +1,12 @@
 import type { Artwork } from '../data'
+import { sanitizeSearchInput } from './sanitize'
 
 // 검색어로 필터링
 export const filterBySearchTerm = (artworks: Artwork[], searchTerm: string): Artwork[] => {
-  if (!searchTerm.trim()) return artworks
+  const sanitizedTerm = sanitizeSearchInput(searchTerm)
+  if (!sanitizedTerm) return artworks
   
-  const lowerSearchTerm = searchTerm.toLowerCase()
+  const lowerSearchTerm = sanitizedTerm.toLowerCase()
   
   return artworks.filter(artwork => 
     artwork.title.toLowerCase().includes(lowerSearchTerm) ||

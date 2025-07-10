@@ -6,6 +6,8 @@ import { Artwork } from '../data/types'
 import { getImageUrl, handleImageError } from '../utils/imageUtils'
 import InfoItem from '../components/InfoItem'
 import DescriptionSection from '../components/DescriptionSection'
+import SkeletonLoader from '../components/SkeletonLoader'
+import { sanitizeNumberParam } from '../utils/sanitize'
 import './ArtworkDetail.css'
 
 function ArtworkDetail() {
@@ -20,7 +22,8 @@ function ArtworkDetail() {
       
       try {
         setLoading(true)
-        const data = await getArtworkById(parseInt(id))
+        const artworkId = sanitizeNumberParam(id, 1, 999999)
+        const data = await getArtworkById(artworkId)
         setArtwork(data)
       } catch (error) {
         console.error('Failed to load artwork:', error)
@@ -35,7 +38,7 @@ function ArtworkDetail() {
   if (loading) {
     return (
       <div className="container">
-        <div className="loading">Loading...</div>
+        <SkeletonLoader type="detail" count={1} />
       </div>
     )
   }

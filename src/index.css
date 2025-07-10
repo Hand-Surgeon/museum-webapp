@@ -182,6 +182,41 @@ main {
   line-height: 1.5;
 }
 
+/* 접근성 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #333;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid #2c5530;
+  outline-offset: 2px;
+}
+
 /* 갤러리 페이지 스타일 */
 .gallery-header {
   background-color: #f8f9fa;

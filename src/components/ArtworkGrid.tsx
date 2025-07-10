@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Artwork } from '../data';
 import { useLanguage } from '../contexts/LanguageContext';
 import ArtworkCard from './ArtworkCard';
@@ -9,7 +10,7 @@ interface ArtworkGridProps {
   showTitle?: boolean;
 }
 
-export default function ArtworkGrid({ artworks, limit, showTitle = true }: ArtworkGridProps) {
+function ArtworkGrid({ artworks, limit, showTitle = true }: ArtworkGridProps) {
   const { t } = useLanguage();
   const itemsToDisplay = limit ? artworks.slice(0, limit) : artworks;
 
@@ -38,3 +39,5 @@ export default function ArtworkGrid({ artworks, limit, showTitle = true }: Artwo
     </div>
   );
 }
+
+export default memo(ArtworkGrid);

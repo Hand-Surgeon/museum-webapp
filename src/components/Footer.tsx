@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 
 function Footer() {
@@ -13,4 +14,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default memo(Footer)

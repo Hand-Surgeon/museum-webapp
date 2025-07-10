@@ -1,23 +1,30 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import type { Artwork } from '../data';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getImageUrl, handleImageError } from '../utils/imageUtils';
+import ProgressiveImage from './ProgressiveImage';
+import { getOptimizedImageUrl, generatePlaceholder, getImageSizeForViewport } from '../utils/imageOptimization';
 import './ArtworkCard.css';
 
 interface ArtworkCardProps {
   artwork: Artwork;
 }
 
-export default function ArtworkCard({ artwork }: ArtworkCardProps) {
+function ArtworkCard({ artwork }: ArtworkCardProps) {
   const { t } = useLanguage();
 
   return (
-    <div className="artwork-card">
-      <Link to={`/artwork/${artwork.id}`}>
+    <article className="artwork-card" aria-label={`${artwork.title} - ${artwork.period}`}>
+      <Link to={`/artwork/${artwork.id}`} aria-label={`${artwork.title} 상세보기`}>
         <div className="artwork-image-wrapper">
-          <img
-            src={getImageUrl(artwork.imageUrl, artwork.category)}
+          <ProgressiveImage
+            src={getOptimizedImageUrl(
+              getImageUrl(artwork.imageUrl, artwork.category),
+              getImageSizeForViewport('card').width
+            )}
             alt={artwork.title}
+            placeholderSrc={generatePlaceholder(400, 300)}
             loading="lazy"
             onError={(e) => handleImageError(e, artwork.category)}
           />
@@ -44,6 +51,8 @@ export default function ArtworkCard({ artwork }: ArtworkCardProps) {
           </p>
         </div>
       </Link>
-    </div>
+    </article>
   );
 }
+
+export default memo(ArtworkCard);
