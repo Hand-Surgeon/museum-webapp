@@ -23,7 +23,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.50.3",
+    "@supabase/supabase-js": "^2.50.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.16.0",
