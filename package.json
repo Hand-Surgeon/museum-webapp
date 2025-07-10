@@ -26,6 +26,7 @@
     "@supabase/supabase-js": "^2.50.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^6.8.0",
     "react-window": "^1.8.11"
   },
@@ -34,8 +35,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "@vitejs/plugin-react": "^3.1.0",
@@ -50,7 +51,7 @@
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "terser": "^5.43.1",
-    "typescript": "^4.9.3",
+    "typescript": "^5.8.3",
     "vite": "^4.1.0",
     "vitest": "^3.2.4"
   },

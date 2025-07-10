@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useRef, useCallback } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
 import type { FixedSizeGrid } from 'react-window'
 import type { Artwork } from '../data'
@@ -16,32 +16,8 @@ function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGr
   const { t } = useLanguage()
   const gridRef = useRef<FixedSizeGrid>(null)
   
-  // 반응형 그리드 계산
-  const getGridDimensions = useCallback(() => {
-    const width = window.innerWidth
-    const padding = 40 // container padding
-    const gap = 20 // grid gap
-    const minCardWidth = 280
-    
-    let columns = Math.floor((width - padding) / (minCardWidth + gap))
-    columns = Math.max(1, Math.min(columns, 4)) // 1-4 columns
-    
-    const cardWidth = (width - padding - (gap * (columns - 1))) / columns
-    const cardHeight = cardWidth * 1.4 // aspect ratio
-    
-    return { columns, cardWidth, cardHeight, width: width - padding }
-  }, [])
-
-  const [dimensions, setDimensions] = useState(getGridDimensions())
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions(getGridDimensions())
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [getGridDimensions])
+  // Custom hook for responsive grid dimensions
+  const dimensions = useResponsiveGrid(280, 1.4)
 
   const rowCount = Math.ceil(artworks.length / dimensions.columns)
 

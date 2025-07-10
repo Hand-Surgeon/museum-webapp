@@ -53,14 +53,17 @@ function FilterControls({
           />
         </div>
         
-        <div className="filter-group">
-          <span className="filter-label">{t('gallery.category')}:</span>
-          <div className="filter-buttons">
+        <div className="filter-group" role="group" aria-labelledby="category-label">
+          <span className="filter-label" id="category-label">{t('gallery.category')}:</span>
+          <div className="filter-buttons" role="radiogroup" aria-labelledby="category-label">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => actions.setSelectedCategory(category)}
                 className={`filter-btn ${filters.selectedCategory === category ? 'active' : ''}`}
+                role="radio"
+                aria-checked={filters.selectedCategory === category}
+                aria-label={`${t('gallery.category')}: ${category}`}
               >
                 {category}
               </button>
@@ -68,14 +71,17 @@ function FilterControls({
           </div>
         </div>
 
-        <div className="filter-group">
-          <span className="filter-label">{t('gallery.period')}:</span>
-          <div className="filter-buttons">
+        <div className="filter-group" role="group" aria-labelledby="period-label">
+          <span className="filter-label" id="period-label">{t('gallery.period')}:</span>
+          <div className="filter-buttons" role="radiogroup" aria-labelledby="period-label">
             {periods.map((period) => (
               <button
                 key={period}
                 onClick={() => actions.setSelectedPeriod(period)}
                 className={`filter-btn ${filters.selectedPeriod === period ? 'active' : ''}`}
+                role="radio"
+                aria-checked={filters.selectedPeriod === period}
+                aria-label={`${t('gallery.period')}: ${period}`}
               >
                 {period}
               </button>
@@ -83,14 +89,17 @@ function FilterControls({
           </div>
         </div>
 
-        <div className="filter-group">
-          <span className="filter-label">{t('gallery.museum')}:</span>
-          <div className="filter-buttons">
+        <div className="filter-group" role="group" aria-labelledby="museum-label">
+          <span className="filter-label" id="museum-label">{t('gallery.museum')}:</span>
+          <div className="filter-buttons" role="radiogroup" aria-labelledby="museum-label">
             {museums.map((museum) => (
               <button
                 key={museum}
                 onClick={() => actions.setSelectedMuseum(museum)}
                 className={`filter-btn ${filters.selectedMuseum === museum ? 'active' : ''}`}
+                role="radio"
+                aria-checked={filters.selectedMuseum === museum}
+                aria-label={`${t('gallery.museum')}: ${museum}`}
               >
                 {museum}
               </button>

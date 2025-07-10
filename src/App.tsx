@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import LoadingSpinner from './components/LoadingSpinner'
 import { useLanguage } from './contexts/LanguageContext'
 import { usePerformanceMonitor } from './hooks/usePerformanceMonitor'
+import { useFocusManagement } from './hooks/useFocusManagement'
 import PerformanceIndicator from './components/PerformanceIndicator'
 
 // Lazy load pages
@@ -15,6 +16,7 @@ const ArtworkDetail = lazy(() => import('./pages/ArtworkDetail'))
 
 function App() {
   usePerformanceMonitor()
+  useFocusManagement()
   const { t } = useLanguage()
   
   return (
@@ -24,7 +26,7 @@ function App() {
           {t('accessibility.skipToContent')}
         </a>
         <Header />
-        <main id="main-content" role="main">
+        <main id="main-content" role="main" tabIndex={-1}>
           <Suspense fallback={<LoadingSpinner message="페이지를 불러오는 중..." />}>
             <Routes>
               <Route path="/" element={<Home />} />
