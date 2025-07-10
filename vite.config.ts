@@ -48,9 +48,11 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            supabase: ['@supabase/supabase-js'],
-            utils: ['react-window']
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-router': ['react-router-dom'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+            'vendor-window': ['react-window'],
+            'locales': ['./src/locales/ko.json', './src/locales/en.json', './src/locales/ja.json', './src/locales/zh.json']
           },
           // Asset naming for better caching
           assetFileNames: isProduction

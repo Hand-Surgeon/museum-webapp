@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import { Language, TranslationData, loadTranslation } from '../locales'
 import LoadingSpinner from '../components/LoadingSpinner'
 
@@ -83,7 +83,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     if (!translations) return key
 
     const keys = key.split('.')
-    let value: any = translations
+    let value: unknown = translations
     
     for (const k of keys) {
       if (value && typeof value === 'object' && k in value) {
@@ -110,13 +110,15 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return <LoadingSpinner message="언어 설정을 불러오는 중..." />
   }
 
+  const contextValue = useMemo(() => ({
+    language,
+    setLanguage: handleLanguageChange,
+    t,
+    isLoading
+  }), [language, isLoading, t, handleLanguageChange])
+
   return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      setLanguage: handleLanguageChange, 
-      t, 
-      isLoading 
-    }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
       {isLoading && isInitialized && (
         <LoadingSpinner message="언어를 변경하는 중..." />

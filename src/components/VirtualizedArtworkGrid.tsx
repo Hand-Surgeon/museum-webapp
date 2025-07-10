@@ -1,7 +1,9 @@
-import { memo, useCallback, useRef, useEffect, useState } from 'react'
+import { memo, useRef } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
+import type { FixedSizeGrid } from 'react-window'
 import type { Artwork } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useResponsiveGrid } from '../hooks/useResponsiveGrid'
 import ArtworkCard from './ArtworkCard'
 import './VirtualizedArtworkGrid.css'
 
@@ -12,7 +14,7 @@ interface VirtualizedArtworkGridProps {
 
 function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGridProps) {
   const { t } = useLanguage()
-  const gridRef = useRef<any>(null)
+  const gridRef = useRef<FixedSizeGrid>(null)
   
   // 반응형 그리드 계산
   const getGridDimensions = useCallback(() => {
@@ -43,7 +45,13 @@ function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGr
 
   const rowCount = Math.ceil(artworks.length / dimensions.columns)
 
-  const Cell = ({ columnIndex, rowIndex, style }: any) => {
+  interface CellProps {
+    columnIndex: number
+    rowIndex: number
+    style: React.CSSProperties
+  }
+
+  const Cell = ({ columnIndex, rowIndex, style }: CellProps) => {
     const index = rowIndex * dimensions.columns + columnIndex
     
     if (index >= artworks.length) {

@@ -5,6 +5,22 @@ interface PerformanceMetric {
   timestamp: number
 }
 
+interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput: boolean
+  value: number
+}
+
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      parameters: Record<string, unknown>
+    ) => void
+  }
+}
+
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor
   private metrics: PerformanceMetric[] = []
@@ -108,9 +124,10 @@ export class PerformanceMonitor {
 
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (!(entry as any).hadRecentInput) {
+          const layoutShiftEntry = entry as LayoutShiftEntry
+          if (!layoutShiftEntry.hadRecentInput) {
             clsEntries.push(entry)
-            clsValue += (entry as any).value
+            clsValue += layoutShiftEntry.value
           }
         }
       })
@@ -172,8 +189,8 @@ export class PerformanceMonitor {
     // This could send data to Google Analytics, Sentry, or custom endpoint
     if (import.meta.env.VITE_ENABLE_ANALYTICS === 'true') {
       // Example: Send to Google Analytics
-      if ((window as any).gtag) {
-        (window as any).gtag('event', 'web_vitals', {
+      if (window.gtag) {
+        window.gtag('event', 'web_vitals', {
           event_category: 'Performance',
           event_label: metric.name,
           value: Math.round(metric.value),

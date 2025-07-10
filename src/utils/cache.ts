@@ -4,7 +4,7 @@ interface CacheEntry<T> {
 }
 
 class SimpleCache {
-  private cache: Map<string, CacheEntry<any>> = new Map()
+  private cache: Map<string, CacheEntry<unknown>> = new Map()
   private defaultTTL: number = 5 * 60 * 1000 // 5분
 
   set<T>(key: string, data: T, ttl?: number): void {
@@ -26,7 +26,7 @@ class SimpleCache {
       return null
     }
 
-    return entry.data
+    return entry.data as T
   }
 
   clear(): void {
@@ -53,7 +53,7 @@ class SimpleCache {
 export const artworkCache = new SimpleCache()
 
 // 캐시 키 생성 헬퍼
-export function createCacheKey(prefix: string, params?: Record<string, any>): string {
+export function createCacheKey(prefix: string, params?: Record<string, unknown>): string {
   if (!params) return prefix
   
   const sortedParams = Object.keys(params)

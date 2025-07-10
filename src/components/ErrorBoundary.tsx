@@ -40,7 +40,7 @@ class ErrorBoundary extends Component<Props, State> {
           <div className="error-content">
             <h1>문제가 발생했습니다</h1>
             <p>죄송합니다. 예기치 않은 오류가 발생했습니다.</p>
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="error-details">
                 <summary>오류 세부정보</summary>
                 <pre>{this.state.error.toString()}</pre>
