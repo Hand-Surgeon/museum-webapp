@@ -5,21 +5,15 @@ import ProgressiveImage from '../ProgressiveImage'
 describe('ProgressiveImage', () => {
   it('renders with placeholder initially', () => {
     const placeholderSrc = 'placeholder.jpg'
-    render(
-      <ProgressiveImage
-        src="full.jpg"
-        alt="Test image"
-        placeholderSrc={placeholderSrc}
-      />
-    )
-    
+    render(<ProgressiveImage src="full.jpg" alt="Test image" placeholderSrc={placeholderSrc} />)
+
     const img = screen.getByAltText('Test image')
     expect(img).toHaveAttribute('src', placeholderSrc)
   })
 
   it('loads full image after mount', async () => {
     const src = 'full.jpg'
-    
+
     // Mock Image constructor
     global.Image = vi.fn().mockImplementation(() => ({
       addEventListener: vi.fn((event, handler) => {
@@ -28,16 +22,10 @@ describe('ProgressiveImage', () => {
         }
       }),
       removeEventListener: vi.fn(),
-      src: ''
+      src: '',
     }))
 
-    render(
-      <ProgressiveImage
-        src={src}
-        alt="Test image"
-        placeholderSrc="placeholder.jpg"
-      />
-    )
+    render(<ProgressiveImage src={src} alt="Test image" placeholderSrc="placeholder.jpg" />)
 
     await waitFor(() => {
       const img = screen.getByAltText('Test image')
@@ -47,14 +35,8 @@ describe('ProgressiveImage', () => {
 
   it('handles image error', () => {
     const onError = vi.fn()
-    
-    render(
-      <ProgressiveImage
-        src="invalid.jpg"
-        alt="Test image"
-        onError={onError}
-      />
-    )
+
+    render(<ProgressiveImage src="invalid.jpg" alt="Test image" onError={onError} />)
 
     const img = screen.getByAltText('Test image')
     img.dispatchEvent(new Event('error'))
@@ -64,24 +46,14 @@ describe('ProgressiveImage', () => {
 
   it('applies custom className', () => {
     const { container } = render(
-      <ProgressiveImage
-        src="test.jpg"
-        alt="Test image"
-        className="custom-class"
-      />
+      <ProgressiveImage src="test.jpg" alt="Test image" className="custom-class" />
     )
 
     expect(container.querySelector('.custom-class')).toBeInTheDocument()
   })
 
   it('sets loading attribute', () => {
-    render(
-      <ProgressiveImage
-        src="test.jpg"
-        alt="Test image"
-        loading="eager"
-      />
-    )
+    render(<ProgressiveImage src="test.jpg" alt="Test image" loading="eager" />)
 
     const img = screen.getByAltText('Test image')
     expect(img).toHaveAttribute('loading', 'eager')

@@ -9,7 +9,7 @@ export function useFocusManagement() {
     // Focus management on route change
     if (previousLocationRef.current !== location.pathname) {
       previousLocationRef.current = location.pathname
-      
+
       // Find main content and focus
       const mainContent = document.getElementById('main-content')
       if (mainContent) {
@@ -22,7 +22,7 @@ export function useFocusManagement() {
         announcement.className = 'sr-only'
         announcement.textContent = `Page loaded: ${document.title}`
         document.body.appendChild(announcement)
-        
+
         setTimeout(() => {
           document.body.removeChild(announcement)
         }, 1000)
@@ -39,7 +39,7 @@ export function useTrapFocus(isActive: boolean, containerRef: React.RefObject<HT
     const focusableElements = container.querySelectorAll(
       'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])'
     )
-    
+
     const firstFocusable = focusableElements[0] as HTMLElement
     const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement
 
@@ -68,7 +68,7 @@ export function useTrapFocus(isActive: boolean, containerRef: React.RefObject<HT
 
     container.addEventListener('keydown', handleTabKey)
     container.addEventListener('keydown', handleEscapeKey)
-    
+
     // Focus first element
     firstFocusable?.focus()
 

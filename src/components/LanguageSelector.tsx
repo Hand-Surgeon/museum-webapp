@@ -9,10 +9,10 @@ const LanguageSelector: React.FC = () => {
     { code: 'ko', name: '한국어', flag: '🇰🇷' },
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'zh', name: '中文', flag: '🇨🇳' },
-    { code: 'ja', name: '日本語', flag: '🇯🇵' }
+    { code: 'ja', name: '日本語', flag: '🇯🇵' },
   ] as const
 
-  const currentLanguage = languages.find(lang => lang.code === language)
+  const currentLanguage = languages.find((lang) => lang.code === language)
 
   const handleLanguageChange = (langCode: 'ko' | 'en' | 'zh' | 'ja') => {
     setLanguage(langCode)
@@ -21,7 +21,7 @@ const LanguageSelector: React.FC = () => {
 
   return (
     <div className="language-selector">
-      <button 
+      <button
         className="language-selector-button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Select Language"
@@ -30,10 +30,10 @@ const LanguageSelector: React.FC = () => {
         <span className="language-name">{currentLanguage?.name}</span>
         <span className={`language-arrow ${isOpen ? 'open' : ''}`}>▼</span>
       </button>
-      
+
       {isOpen && (
         <div className="language-dropdown">
-          {languages.map(lang => (
+          {languages.map((lang) => (
             <button
               key={lang.code}
               className={`language-option ${language === lang.code ? 'active' : ''}`}
@@ -46,7 +46,7 @@ const LanguageSelector: React.FC = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .language-selector {
           position: relative;
           display: inline-block;

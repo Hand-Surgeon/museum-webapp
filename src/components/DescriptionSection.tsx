@@ -4,10 +4,10 @@ interface DescriptionSectionProps {
   isSignificance?: boolean
 }
 
-export default function DescriptionSection({ 
-  title, 
-  content, 
-  isSignificance = false 
+export default function DescriptionSection({
+  title,
+  content,
+  isSignificance = false,
 }: DescriptionSectionProps) {
   return (
     <div className="detail-section">

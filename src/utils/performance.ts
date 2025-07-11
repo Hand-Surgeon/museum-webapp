@@ -13,11 +13,7 @@ interface LayoutShiftEntry extends PerformanceEntry {
 // Extend Window interface for gtag
 declare global {
   interface Window {
-    gtag?: (
-      command: string,
-      action: string,
-      parameters: Record<string, unknown>
-    ) => void
+    gtag?: (command: string, action: string, parameters: Record<string, unknown>) => void
   }
 }
 
@@ -27,7 +23,7 @@ export class PerformanceMonitor {
   private isEnabled: boolean
 
   private constructor() {
-    this.isEnabled = import.meta.env.VITE_ENABLE_PERFORMANCE_MONITORING === 'true'
+    this.isEnabled = import.meta.env['VITE_ENABLE_PERFORMANCE_MONITORING'] === 'true'
   }
 
   static getInstance(): PerformanceMonitor {
@@ -43,7 +39,7 @@ export class PerformanceMonitor {
     // First Contentful Paint (FCP)
     this.observePaint('first-contentful-paint', 'FCP', {
       good: 1800,
-      poor: 3000
+      poor: 3000,
     })
 
     // Largest Contentful Paint (LCP)
@@ -59,7 +55,11 @@ export class PerformanceMonitor {
     this.measureTTFB()
   }
 
-  private observePaint(entryType: string, metricName: string, thresholds: { good: number; poor: number }): void {
+  private observePaint(
+    entryType: string,
+    metricName: string,
+    thresholds: { good: number; poor: number }
+  ): void {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
@@ -70,7 +70,7 @@ export class PerformanceMonitor {
               name: metricName,
               value,
               rating,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             })
           }
         }
@@ -90,7 +90,7 @@ export class PerformanceMonitor {
           name: 'LCP',
           value,
           rating,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         })
         observer.disconnect()
       })
@@ -108,7 +108,7 @@ export class PerformanceMonitor {
             name: 'FID',
             value,
             rating,
-            timestamp: Date.now()
+            timestamp: Date.now(),
           })
           observer.disconnect()
         }
@@ -141,7 +141,7 @@ export class PerformanceMonitor {
             name: 'CLS',
             value: clsValue,
             rating,
-            timestamp: Date.now()
+            timestamp: Date.now(),
           })
         }
       })
@@ -150,7 +150,9 @@ export class PerformanceMonitor {
 
   private measureTTFB(): void {
     if ('performance' in window && 'getEntriesByType' in window.performance) {
-      const navigationEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[]
+      const navigationEntries = window.performance.getEntriesByType(
+        'navigation'
+      ) as PerformanceNavigationTiming[]
       if (navigationEntries.length > 0) {
         const navigation = navigationEntries[0]
         const value = navigation.responseStart - navigation.fetchStart
@@ -159,13 +161,17 @@ export class PerformanceMonitor {
           name: 'TTFB',
           value,
           rating,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         })
       }
     }
   }
 
-  private getRating(value: number, goodThreshold: number, poorThreshold: number): 'good' | 'needs-improvement' | 'poor' {
+  private getRating(
+    value: number,
+    goodThreshold: number,
+    poorThreshold: number
+  ): 'good' | 'needs-improvement' | 'poor' {
     if (value <= goodThreshold) return 'good'
     if (value <= poorThreshold) return 'needs-improvement'
     return 'poor'
@@ -173,10 +179,11 @@ export class PerformanceMonitor {
 
   private addMetric(metric: PerformanceMetric): void {
     this.metrics.push(metric)
-    
+
     // Log to console in development
     if (import.meta.env.DEV) {
-      const emoji = metric.rating === 'good' ? '✅' : metric.rating === 'needs-improvement' ? '⚠️' : '❌'
+      const emoji =
+        metric.rating === 'good' ? '✅' : metric.rating === 'needs-improvement' ? '⚠️' : '❌'
       console.log(`${emoji} ${metric.name}: ${metric.value.toFixed(2)}ms (${metric.rating})`)
     }
 
@@ -187,14 +194,14 @@ export class PerformanceMonitor {
   private sendToAnalytics(metric: PerformanceMetric): void {
     // Placeholder for analytics integration
     // This could send data to Google Analytics, Sentry, or custom endpoint
-    if (import.meta.env.VITE_ENABLE_ANALYTICS === 'true') {
+    if (import.meta.env['VITE_ENABLE_ANALYTICS'] === 'true') {
       // Example: Send to Google Analytics
       if (window.gtag) {
         window.gtag('event', 'web_vitals', {
           event_category: 'Performance',
           event_label: metric.name,
           value: Math.round(metric.value),
-          metric_rating: metric.rating
+          metric_rating: metric.rating,
         })
       }
     }
@@ -216,7 +223,7 @@ export class PerformanceMonitor {
     for (const [name, metric] of latestMetrics) {
       summary[name] = {
         value: metric.value,
-        rating: metric.rating
+        rating: metric.rating,
       }
     }
 
@@ -227,11 +234,11 @@ export class PerformanceMonitor {
     if (!this.isEnabled) return () => {}
 
     const startTime = performance.now()
-    
+
     return () => {
       const endTime = performance.now()
       const renderTime = endTime - startTime
-      
+
       if (import.meta.env.DEV && renderTime > 16) {
         console.warn(`⚠️ Slow render detected for ${componentName}: ${renderTime.toFixed(2)}ms`)
       }

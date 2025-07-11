@@ -7,10 +7,10 @@ interface LoadingSpinnerProps {
   overlay?: boolean
 }
 
-function LoadingSpinner({ 
-  message = "로딩 중...", 
+function LoadingSpinner({
+  message = '로딩 중...',
   size = 'medium',
-  overlay = true 
+  overlay = true,
 }: LoadingSpinnerProps) {
   return (
     <div className={`loading-container ${overlay ? 'loading-overlay' : ''}`}>

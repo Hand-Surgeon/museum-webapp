@@ -9,7 +9,12 @@ function Footer() {
       <div className="container">
         <p>{t('footer.copyright')}</p>
         <address>
-          <p>{t('footer.address')} | <a href={`tel:${t('footer.phone').replace(/-/g, '')}`} aria-label={t('footer.phone')}>{t('footer.phone')}</a></p>
+          <p>
+            {t('footer.address')} |{' '}
+            <a href={`tel:${t('footer.phone').replace(/-/g, '')}`} aria-label={t('footer.phone')}>
+              {t('footer.phone')}
+            </a>
+          </p>
         </address>
       </div>
     </footer>

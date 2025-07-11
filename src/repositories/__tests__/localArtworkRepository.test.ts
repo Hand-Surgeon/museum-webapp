@@ -1,10 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { LocalArtworkRepository } from '../localArtworkRepository'
-import { Artwork } from '../../data/types'
 
 describe('LocalArtworkRepository', () => {
   let repository: LocalArtworkRepository
-  
+
   beforeEach(() => {
     repository = new LocalArtworkRepository()
   })
@@ -18,7 +17,7 @@ describe('LocalArtworkRepository', () => {
   it('finds artwork by id', async () => {
     const artworks = await repository.findAll()
     const firstArtwork = artworks[0]
-    
+
     const found = await repository.findById(firstArtwork.id)
     expect(found).toEqual(firstArtwork)
   })
@@ -31,8 +30,8 @@ describe('LocalArtworkRepository', () => {
   it('finds featured artworks', async () => {
     const featured = await repository.findFeatured()
     expect(Array.isArray(featured)).toBe(true)
-    
-    featured.forEach(artwork => {
+
+    featured.forEach((artwork) => {
       expect(artwork.featured).toBe(true)
     })
   })
@@ -40,8 +39,8 @@ describe('LocalArtworkRepository', () => {
   it('finds artworks by category', async () => {
     const category = '도자기'
     const artworks = await repository.findByCategory(category)
-    
-    artworks.forEach(artwork => {
+
+    artworks.forEach((artwork) => {
       expect(artwork.category).toBe(category)
     })
   })
@@ -49,8 +48,8 @@ describe('LocalArtworkRepository', () => {
   it('finds artworks by museum', async () => {
     const museum = '국립중앙박물관'
     const artworks = await repository.findByMuseum(museum)
-    
-    artworks.forEach(artwork => {
+
+    artworks.forEach((artwork) => {
       expect(artwork.museum).toBe(museum)
     })
   })
@@ -58,8 +57,8 @@ describe('LocalArtworkRepository', () => {
   it('finds artworks by period', async () => {
     const period = '조선시대'
     const artworks = await repository.findByPeriod(period)
-    
-    artworks.forEach(artwork => {
+
+    artworks.forEach((artwork) => {
       expect(artwork.period).toBe(period)
     })
   })
@@ -67,14 +66,14 @@ describe('LocalArtworkRepository', () => {
   it('searches artworks by query', async () => {
     const query = '청자'
     const results = await repository.search(query)
-    
+
     expect(results.length).toBeGreaterThan(0)
-    results.forEach(artwork => {
-      const hasQuery = 
+    results.forEach((artwork) => {
+      const hasQuery =
         artwork.title.includes(query) ||
         artwork.description.includes(query) ||
         (artwork.titleEn && artwork.titleEn.toLowerCase().includes(query.toLowerCase()))
-      
+
       expect(hasQuery).toBe(true)
     })
   })
@@ -83,12 +82,12 @@ describe('LocalArtworkRepository', () => {
     const filters = {
       category: '도자기',
       period: '고려시대',
-      featured: true
+      featured: true,
     }
-    
+
     const results = await repository.findByFilters(filters)
-    
-    results.forEach(artwork => {
+
+    results.forEach((artwork) => {
       expect(artwork.category).toBe(filters.category)
       expect(artwork.period).toBe(filters.period)
       expect(artwork.featured).toBe(filters.featured)

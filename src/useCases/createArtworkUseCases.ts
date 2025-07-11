@@ -7,7 +7,7 @@ import {
   GetArtworksByCategoryUseCase,
   GetArtworksByPeriodUseCase,
   GetArtworksByMuseumUseCase,
-  GetArtworkStats
+  GetArtworkStats,
 } from './artworkUseCases'
 
 export interface ArtworkUseCases {
@@ -30,6 +30,6 @@ export function createArtworkUseCases(repository: IArtworkRepository): ArtworkUs
     getArtworksByCategory: new GetArtworksByCategoryUseCase(repository),
     getArtworksByPeriod: new GetArtworksByPeriodUseCase(repository),
     getArtworksByMuseum: new GetArtworksByMuseumUseCase(repository),
-    getArtworkStats: new GetArtworkStats(repository)
+    getArtworkStats: new GetArtworkStats(repository),
   }
 }

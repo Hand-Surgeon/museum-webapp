@@ -12,7 +12,7 @@ const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-  siblingCount = 1
+  siblingCount = 1,
 }) => {
   const range = (start: number, end: number) => {
     const length = end - start + 1
@@ -67,7 +67,7 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         ‹
       </button>
-      
+
       {paginationRange.map((pageNumber, index) => {
         if (pageNumber === '...') {
           return (
@@ -80,9 +80,7 @@ const Pagination: React.FC<PaginationProps> = ({
         return (
           <button
             key={pageNumber}
-            className={`pagination-button ${
-              pageNumber === currentPage ? 'active' : ''
-            }`}
+            className={`pagination-button ${pageNumber === currentPage ? 'active' : ''}`}
             onClick={() => onPageChange(pageNumber as number)}
             aria-label={`Go to page ${pageNumber}`}
             aria-current={pageNumber === currentPage ? 'page' : undefined}

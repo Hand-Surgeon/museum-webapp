@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo, useTransition, Suspense } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { museums } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
-import { useArtworkFilter } from '../hooks/useArtworkFilter'
+import { useArtworkFilter, type FilterActions } from '../hooks/useArtworkFilter'
 import { useKeyboardNavigation } from '../hooks/useKeyboardNavigation'
 import { useDeferredSearch } from '../hooks/useDeferredSearch'
 import { useTransitionedActions } from '../hooks/useTransitionedActions'
@@ -22,20 +22,15 @@ function Gallery() {
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
-  const [isPending, startTransition] = useTransition()
   const itemsPerPage = 12
-  
-  const {
-    filters,
-    filteredArtworks,
-    actions
-  } = useArtworkFilter(artworks)
-  
+
+  const { filters, filteredArtworks, actions } = useArtworkFilter(artworks)
+
   // Use deferred search for better performance
-  const { searchTerm: deferredSearch, isSearching } = useDeferredSearch(filters.search)
-  
+  const { isSearching } = useDeferredSearch(filters.searchTerm)
+
   // Wrap filter actions with transitions for better UX
-  const transitionedActions = useTransitionedActions(actions)
+  const { isPending, ...transitionedActions } = useTransitionedActions(actions)
 
   useEffect(() => {
     async function loadArtworks() {
@@ -49,7 +44,7 @@ function Gallery() {
         setLoading(false)
       }
     }
-    
+
     loadArtworks()
   }, [])
 
@@ -60,7 +55,7 @@ function Gallery() {
       const sanitizedMuseum = sanitizeFilterValue(museum, museums, '전체')
       actions.setSelectedMuseum(sanitizedMuseum)
     }
-    
+
     const page = searchParams.get('page')
     if (page) {
       const pageNum = sanitizeNumberParam(page, 1, 1000)
@@ -108,7 +103,7 @@ function Gallery() {
       if (currentPage < totalPages) {
         handlePageChange(currentPage + 1)
       }
-    }
+    },
   })
 
   return (
@@ -122,12 +117,12 @@ function Gallery() {
 
       <FilterControls
         filters={filters}
-        actions={transitionedActions}
+        actions={transitionedActions as FilterActions}
         showAdvancedFilters={showAdvancedFilters}
         onToggleAdvancedFilters={() => setShowAdvancedFilters(!showAdvancedFilters)}
       />
-      
-      {(transitionedActions.isPending || isSearching) && (
+
+      {(isPending || isSearching) && (
         <div className="transition-indicator">
           <span>검색 중...</span>
         </div>

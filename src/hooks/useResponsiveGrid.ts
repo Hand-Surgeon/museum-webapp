@@ -12,18 +12,18 @@ export function useResponsiveGrid(minCardWidth: number = 280, aspectRatio: numbe
     const width = window.innerWidth
     const padding = 40 // container padding
     const gap = 20 // grid gap
-    
+
     let columns = Math.floor((width - padding) / (minCardWidth + gap))
     columns = Math.max(1, Math.min(columns, 4)) // 1-4 columns
-    
-    const cardWidth = (width - padding - (gap * (columns - 1))) / columns
+
+    const cardWidth = (width - padding - gap * (columns - 1)) / columns
     const cardHeight = cardWidth * aspectRatio
-    
+
     return {
       columns,
       cardWidth,
       cardHeight,
-      containerWidth: width - padding
+      containerWidth: width - padding,
     }
   }, [minCardWidth, aspectRatio])
 

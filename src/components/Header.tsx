@@ -16,9 +16,22 @@ function Header() {
           </Link>
           <nav className="nav-section" role="navigation" aria-label="Main navigation">
             <ul className="nav-links" role="list">
-              <li><Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>{t('navigation.home')}</Link></li>
-              <li><Link to="/gallery" aria-current={location.pathname === '/gallery' ? 'page' : undefined}>{t('navigation.gallery')}</Link></li>
-              <li><a href="#about">{t('navigation.about')}</a></li>
+              <li>
+                <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>
+                  {t('navigation.home')}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/gallery"
+                  aria-current={location.pathname === '/gallery' ? 'page' : undefined}
+                >
+                  {t('navigation.gallery')}
+                </Link>
+              </li>
+              <li>
+                <a href="#about">{t('navigation.about')}</a>
+              </li>
             </ul>
             <LanguageSelector />
           </nav>

@@ -1,47 +1,51 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { museums } from '../data';
-import { useLanguage } from '../contexts/LanguageContext';
-import { getFeaturedArtworks, getAllArtworks } from '../services/artworkService';
-import { Artwork } from '../data/types';
-import ArtworkGrid from '../components/ArtworkGrid';
-import './Home.css';
+import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { museums } from '../data'
+import { useLanguage } from '../contexts/LanguageContext'
+import { getFeaturedArtworks, getAllArtworks } from '../services/artworkService'
+import { Artwork } from '../data/types'
+import ArtworkGrid from '../components/ArtworkGrid'
+import './Home.css'
 
 function Home() {
-  const { t } = useLanguage();
-  const [featuredArtworks, setFeaturedArtworks] = useState<Artwork[]>([]);
-  const [allArtworks, setAllArtworks] = useState<Artwork[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { t } = useLanguage()
+  const [featuredArtworks, setFeaturedArtworks] = useState<Artwork[]>([])
+  const [allArtworks, setAllArtworks] = useState<Artwork[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function loadData() {
       try {
-        setLoading(true);
-        const [featured, all] = await Promise.all([
-          getFeaturedArtworks(),
-          getAllArtworks()
-        ]);
-        setFeaturedArtworks(featured);
-        setAllArtworks(all);
+        setLoading(true)
+        const [featured, all] = await Promise.all([getFeaturedArtworks(), getAllArtworks()])
+        setFeaturedArtworks(featured)
+        setAllArtworks(all)
       } catch (error) {
-        console.error('Failed to load artworks:', error);
+        console.error('Failed to load artworks:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-    
-    loadData();
-  }, []);
 
-  const museumStats = museums.slice(1).map(museum => ({
+    loadData()
+  }, [])
+
+  const museumStats = museums.slice(1).map((museum) => ({
     name: museum,
-    count: allArtworks.filter(artwork => artwork.museum === museum).length,
-    translationKey: museum === '고고관' ? 'archaeologyHall' :
-                   museum === '미술관' ? 'artHall' :
-                   museum === '기증관' ? 'donationHall' :
-                   museum === '역사관' ? 'historyHall' :
-                   museum === '아시아관' ? 'asianArtHall' : museum
-  }));
+    count: allArtworks.filter((artwork) => artwork.museum === museum).length,
+    translationKey:
+      museum === '고고관'
+        ? 'archaeologyHall'
+        : museum === '미술관'
+          ? 'artHall'
+          : museum === '기증관'
+            ? 'donationHall'
+            : museum === '역사관'
+              ? 'historyHall'
+              : museum === '아시아관'
+                ? 'asianArtHall'
+                : museum,
+  }))
 
   return (
     <div className="home-page">
@@ -76,7 +80,7 @@ function Home() {
           <h2 className="section-title">{t('home.museumsTitle')}</h2>
           <div className="museums-grid">
             {museumStats.map((museum) => (
-              <Link 
+              <Link
                 key={museum.name}
                 to={`/gallery?museum=${encodeURIComponent(museum.name)}`}
                 className="museum-card"
@@ -92,7 +96,7 @@ function Home() {
         </div>
       </section>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

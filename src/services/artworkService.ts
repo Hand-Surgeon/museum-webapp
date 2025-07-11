@@ -9,7 +9,7 @@ import {
   GetArtworksByPeriodUseCase,
   SearchArtworksUseCase,
   FilterArtworksUseCase,
-  InvalidateArtworkCacheUseCase
+  InvalidateArtworkCacheUseCase,
 } from '../useCases/artworkUseCases'
 
 // Use Case instances

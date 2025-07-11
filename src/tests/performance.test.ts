@@ -6,9 +6,10 @@ describe('PerformanceMonitor', () => {
 
   beforeEach(() => {
     // Reset singleton instance
-    ;(PerformanceMonitor as any).instance = undefined
+    // @ts-expect-error Accessing private property for testing
+    ;(PerformanceMonitor as unknown as { instance: undefined }).instance = undefined
     monitor = PerformanceMonitor.getInstance()
-    
+
     // Mock performance API
     vi.stubGlobal('performance', {
       now: vi.fn(() => 1000),
@@ -16,9 +17,9 @@ describe('PerformanceMonitor', () => {
         {
           name: 'navigation',
           fetchStart: 0,
-          responseStart: 100
-        }
-      ])
+          responseStart: 100,
+        },
+      ]),
     })
   })
 
@@ -30,12 +31,13 @@ describe('PerformanceMonitor', () => {
 
   it('should measure component render time', () => {
     const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    
+
     // Mock slow render
     vi.stubGlobal('performance', {
-      now: vi.fn()
+      now: vi
+        .fn()
         .mockReturnValueOnce(1000) // Start time
-        .mockReturnValueOnce(1050) // End time (50ms render)
+        .mockReturnValueOnce(1050), // End time (50ms render)
     })
 
     const endMeasure = monitor.measureComponentRender('TestComponent')
@@ -44,24 +46,25 @@ describe('PerformanceMonitor', () => {
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       expect.stringContaining('Slow render detected for TestComponent: 50.00ms')
     )
-    
+
     consoleWarnSpy.mockRestore()
   })
 
   it('should track metrics', () => {
     // Add some metrics manually
-    ;(monitor as any).addMetric({
+    // @ts-expect-error Accessing private method for testing
+    ;(monitor as unknown as { addMetric: (metric: unknown) => void }).addMetric({
       name: 'FCP',
       value: 1500,
       rating: 'good',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
-    
-    ;(monitor as any).addMetric({
+    // @ts-expect-error Accessing private method for testing
+    ;(monitor as unknown as { addMetric: (metric: unknown) => void }).addMetric({
       name: 'LCP',
       value: 3000,
       rating: 'needs-improvement',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
 
     const metrics = monitor.getMetrics()
@@ -72,36 +75,40 @@ describe('PerformanceMonitor', () => {
 
   it('should provide metrics summary', () => {
     // Add metrics
-    ;(monitor as any).addMetric({
+    // @ts-expect-error Accessing private method for testing
+    ;(monitor as unknown as { addMetric: (metric: unknown) => void }).addMetric({
       name: 'FCP',
       value: 1500,
       rating: 'good',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
-    
-    ;(monitor as any).addMetric({
+    // @ts-expect-error Accessing private method for testing
+    ;(monitor as unknown as { addMetric: (metric: unknown) => void }).addMetric({
       name: 'FCP',
       value: 1800,
       rating: 'good',
-      timestamp: Date.now() + 1000
+      timestamp: Date.now() + 1000,
     })
 
     const summary = monitor.getMetricsSummary()
     expect(summary.FCP).toEqual({
       value: 1800, // Latest value
-      rating: 'good'
+      rating: 'good',
     })
   })
 
   it('should rate metrics correctly', () => {
-    const getRating = (monitor as any).getRating.bind(monitor)
-    
+    // @ts-expect-error Accessing private method for testing
+    const getRating = (
+      monitor as unknown as { getRating: (value: number, good: number, poor: number) => string }
+    ).getRating.bind(monitor)
+
     // Test good rating
     expect(getRating(50, 100, 300)).toBe('good')
-    
+
     // Test needs-improvement rating
     expect(getRating(200, 100, 300)).toBe('needs-improvement')
-    
+
     // Test poor rating
     expect(getRating(400, 100, 300)).toBe('poor')
   })

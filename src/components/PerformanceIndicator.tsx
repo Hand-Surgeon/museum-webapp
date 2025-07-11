@@ -6,7 +6,9 @@ interface PerformanceIndicatorProps {
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 }
 
-export default function PerformanceIndicator({ position = 'bottom-right' }: PerformanceIndicatorProps) {
+export default function PerformanceIndicator({
+  position = 'bottom-right',
+}: PerformanceIndicatorProps) {
   const [metrics, setMetrics] = useState<Record<string, { value: number; rating: string }>>({})
   const [isVisible, setIsVisible] = useState(false)
 
@@ -20,7 +22,7 @@ export default function PerformanceIndicator({ position = 'bottom-right' }: Perf
 
     // Update metrics every 2 seconds
     const interval = setInterval(updateMetrics, 2000)
-    
+
     // Initial update after page load
     setTimeout(updateMetrics, 1000)
 
@@ -33,10 +35,14 @@ export default function PerformanceIndicator({ position = 'bottom-right' }: Perf
 
   const getColorForRating = (rating: string) => {
     switch (rating) {
-      case 'good': return '#4caf50'
-      case 'needs-improvement': return '#ff9800'
-      case 'poor': return '#f44336'
-      default: return '#666'
+      case 'good':
+        return '#4caf50'
+      case 'needs-improvement':
+        return '#ff9800'
+      case 'poor':
+        return '#f44336'
+      default:
+        return '#666'
     }
   }
 
@@ -49,17 +55,14 @@ export default function PerformanceIndicator({ position = 'bottom-right' }: Perf
       >
         📊
       </button>
-      
+
       {isVisible && (
         <div className="performance-metrics">
           <h3>Web Vitals</h3>
           {Object.entries(metrics).map(([name, { value, rating }]) => (
             <div key={name} className="metric">
               <span className="metric-name">{name}:</span>
-              <span 
-                className="metric-value"
-                style={{ color: getColorForRating(rating) }}
-              >
+              <span className="metric-value" style={{ color: getColorForRating(rating) }}>
                 {value.toFixed(0)}ms
               </span>
               <span className="metric-rating">({rating})</span>

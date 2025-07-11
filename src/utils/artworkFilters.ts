@@ -5,40 +5,42 @@ import { sanitizeSearchInput } from './sanitize'
 export const filterBySearchTerm = (artworks: Artwork[], searchTerm: string): Artwork[] => {
   const sanitizedTerm = sanitizeSearchInput(searchTerm)
   if (!sanitizedTerm) return artworks
-  
+
   const lowerSearchTerm = sanitizedTerm.toLowerCase()
-  
-  return artworks.filter(artwork => 
-    artwork.title.toLowerCase().includes(lowerSearchTerm) ||
-    artwork.description.toLowerCase().includes(lowerSearchTerm) ||
-    (artwork.detailedDescription && artwork.detailedDescription.toLowerCase().includes(lowerSearchTerm)) ||
-    (artwork.titleEn && artwork.titleEn.toLowerCase().includes(lowerSearchTerm))
+
+  return artworks.filter(
+    (artwork) =>
+      artwork.title.toLowerCase().includes(lowerSearchTerm) ||
+      artwork.description.toLowerCase().includes(lowerSearchTerm) ||
+      (artwork.detailedDescription &&
+        artwork.detailedDescription.toLowerCase().includes(lowerSearchTerm)) ||
+      (artwork.titleEn && artwork.titleEn.toLowerCase().includes(lowerSearchTerm))
   )
 }
 
 // 카테고리로 필터링
 export const filterByCategory = (artworks: Artwork[], category: string): Artwork[] => {
   if (category === '전체') return artworks
-  return artworks.filter(artwork => artwork.category === category)
+  return artworks.filter((artwork) => artwork.category === category)
 }
 
 // 시대로 필터링
 export const filterByPeriod = (artworks: Artwork[], period: string): Artwork[] => {
   if (period === '전체') return artworks
-  return artworks.filter(artwork => artwork.period.includes(period))
+  return artworks.filter((artwork) => artwork.period.includes(period))
 }
 
 // 전시관으로 필터링
 export const filterByMuseum = (artworks: Artwork[], museum: string): Artwork[] => {
   if (museum === '전체') return artworks
-  return artworks.filter(artwork => artwork.museum === museum)
+  return artworks.filter((artwork) => artwork.museum === museum)
 }
 
 // 문화재 등급으로 필터링
 export const filterByGrade = (artworks: Artwork[], grade: string): Artwork[] => {
   if (grade === '전체') return artworks
-  
-  return artworks.filter(artwork => {
+
+  return artworks.filter((artwork) => {
     switch (grade) {
       case '국보':
         return artwork.culturalProperty?.includes('국보')

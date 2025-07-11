@@ -99,7 +99,7 @@ export const loadTranslation = async (language: Language): Promise<TranslationDa
       default:
         return koTranslation
     }
-  } catch (error) {
+  } catch {
     console.warn(`Failed to load translation for ${language}, falling back to Korean`)
     return koTranslation
   }

@@ -1,4 +1,4 @@
-import { memo, useRef, useCallback } from 'react'
+import { memo, useRef } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
 import type { FixedSizeGrid } from 'react-window'
 import type { Artwork } from '../data'
@@ -15,7 +15,7 @@ interface VirtualizedArtworkGridProps {
 function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGridProps) {
   const { t } = useLanguage()
   const gridRef = useRef<FixedSizeGrid>(null)
-  
+
   // Custom hook for responsive grid dimensions
   const dimensions = useResponsiveGrid(280, 1.4)
 
@@ -29,13 +29,13 @@ function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGr
 
   const Cell = ({ columnIndex, rowIndex, style }: CellProps) => {
     const index = rowIndex * dimensions.columns + columnIndex
-    
+
     if (index >= artworks.length) {
       return null
     }
 
     const artwork = artworks[index]
-    
+
     // 마지막 행에 도달했을 때 콜백 호출
     if (rowIndex === rowCount - 1 && onEndReached) {
       onEndReached()
@@ -62,7 +62,7 @@ function VirtualizedArtworkGrid({ artworks, onEndReached }: VirtualizedArtworkGr
         <div className="results-info">
           <p>{t('gallery.results', { count: artworks.length })}</p>
         </div>
-        
+
         <Grid
           ref={gridRef}
           className="virtualized-artwork-grid"

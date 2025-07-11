@@ -1,24 +1,8 @@
 import { memo } from 'react'
 import { categories, periods, museums, culturalPropertyGrades } from '../data'
 import { useLanguage } from '../contexts/LanguageContext'
+import type { FilterState, FilterActions } from '../hooks/useArtworkFilter'
 import './FilterControls.css'
-
-interface FilterState {
-  searchTerm: string
-  selectedCategory: string
-  selectedPeriod: string
-  selectedMuseum: string
-  selectedGrade: string
-}
-
-interface FilterActions {
-  setSearchTerm: (term: string) => void
-  setSelectedCategory: (category: string) => void
-  setSelectedPeriod: (period: string) => void
-  setSelectedMuseum: (museum: string) => void
-  setSelectedGrade: (grade: string) => void
-  resetFilters: () => void
-}
 
 interface FilterControlsProps {
   filters: FilterState
@@ -31,7 +15,7 @@ function FilterControls({
   filters,
   actions,
   showAdvancedFilters,
-  onToggleAdvancedFilters
+  onToggleAdvancedFilters,
 }: FilterControlsProps) {
   const { t } = useLanguage()
 
@@ -52,9 +36,11 @@ function FilterControls({
             aria-label={t('gallery.searchPlaceholder')}
           />
         </div>
-        
+
         <div className="filter-group" role="group" aria-labelledby="category-label">
-          <span className="filter-label" id="category-label">{t('gallery.category')}:</span>
+          <span className="filter-label" id="category-label">
+            {t('gallery.category')}:
+          </span>
           <div className="filter-buttons" role="radiogroup" aria-labelledby="category-label">
             {categories.map((category) => (
               <button
@@ -72,7 +58,9 @@ function FilterControls({
         </div>
 
         <div className="filter-group" role="group" aria-labelledby="period-label">
-          <span className="filter-label" id="period-label">{t('gallery.period')}:</span>
+          <span className="filter-label" id="period-label">
+            {t('gallery.period')}:
+          </span>
           <div className="filter-buttons" role="radiogroup" aria-labelledby="period-label">
             {periods.map((period) => (
               <button
@@ -90,7 +78,9 @@ function FilterControls({
         </div>
 
         <div className="filter-group" role="group" aria-labelledby="museum-label">
-          <span className="filter-label" id="museum-label">{t('gallery.museum')}:</span>
+          <span className="filter-label" id="museum-label">
+            {t('gallery.museum')}:
+          </span>
           <div className="filter-buttons" role="radiogroup" aria-labelledby="museum-label">
             {museums.map((museum) => (
               <button
@@ -107,10 +97,7 @@ function FilterControls({
           </div>
         </div>
 
-        <button 
-          onClick={onToggleAdvancedFilters}
-          className="toggle-advanced-btn"
-        >
+        <button onClick={onToggleAdvancedFilters} className="toggle-advanced-btn">
           {showAdvancedFilters ? t('gallery.hideAdvanced') : t('gallery.showAdvanced')}
         </button>
 

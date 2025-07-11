@@ -11,28 +11,31 @@ interface KeyboardNavigationOptions {
 }
 
 export function useKeyboardNavigation(options: KeyboardNavigationOptions) {
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    switch (event.key) {
-      case 'Escape':
-        options.onEscape?.()
-        break
-      case 'Enter':
-        options.onEnter?.()
-        break
-      case 'ArrowLeft':
-        options.onArrowLeft?.()
-        break
-      case 'ArrowRight':
-        options.onArrowRight?.()
-        break
-      case 'ArrowUp':
-        options.onArrowUp?.()
-        break
-      case 'ArrowDown':
-        options.onArrowDown?.()
-        break
-    }
-  }, [options])
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      switch (event.key) {
+        case 'Escape':
+          options.onEscape?.()
+          break
+        case 'Enter':
+          options.onEnter?.()
+          break
+        case 'ArrowLeft':
+          options.onArrowLeft?.()
+          break
+        case 'ArrowRight':
+          options.onArrowRight?.()
+          break
+        case 'ArrowUp':
+          options.onArrowUp?.()
+          break
+        case 'ArrowDown':
+          options.onArrowDown?.()
+          break
+      }
+    },
+    [options]
+  )
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
@@ -49,7 +52,7 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement>, isActiv
     const focusableElements = container.querySelectorAll(
       'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])'
     )
-    
+
     const firstFocusable = focusableElements[0] as HTMLElement
     const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement
 

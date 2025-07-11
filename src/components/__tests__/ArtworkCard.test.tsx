@@ -9,8 +9,8 @@ vi.mock('../../contexts/LanguageContext', () => ({
   useLanguage: () => ({
     t: (key: string) => key,
     language: 'ko',
-    setLanguage: vi.fn()
-  })
+    setLanguage: vi.fn(),
+  }),
 }))
 
 const mockArtwork: Artwork = {
@@ -33,21 +33,17 @@ const mockArtwork: Artwork = {
   inventoryNumber: 'NMK-001',
   era: '12세기',
   significance: '고려청자의 정수를 보여주는 작품',
-  displayLocation: '도자기실'
+  displayLocation: '도자기실',
 }
 
 const renderWithRouter = (component: React.ReactElement) => {
-  return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
-  )
+  return render(<BrowserRouter>{component}</BrowserRouter>)
 }
 
 describe('ArtworkCard', () => {
   it('renders artwork information correctly', () => {
     renderWithRouter(<ArtworkCard artwork={mockArtwork} />)
-    
+
     expect(screen.getByText(mockArtwork.title)).toBeInTheDocument()
     expect(screen.getByText(mockArtwork.titleEn!)).toBeInTheDocument()
     expect(screen.getByText(mockArtwork.period)).toBeInTheDocument()
@@ -56,29 +52,29 @@ describe('ArtworkCard', () => {
 
   it('shows featured badge when artwork is featured', () => {
     renderWithRouter(<ArtworkCard artwork={mockArtwork} />)
-    
+
     expect(screen.getByText('common.featured')).toBeInTheDocument()
   })
 
   it('shows cultural property badge when applicable', () => {
     renderWithRouter(<ArtworkCard artwork={mockArtwork} />)
-    
+
     expect(screen.getByText(mockArtwork.culturalProperty!)).toBeInTheDocument()
   })
 
   it('truncates long descriptions', () => {
     const longDescription = 'a'.repeat(150)
     const artworkWithLongDesc = { ...mockArtwork, description: longDescription }
-    
+
     renderWithRouter(<ArtworkCard artwork={artworkWithLongDesc} />)
-    
+
     const description = screen.getByText(/^a+\.\.\./)
     expect(description.textContent).toHaveLength(103) // 100 chars + '...'
   })
 
   it('links to artwork detail page', () => {
     renderWithRouter(<ArtworkCard artwork={mockArtwork} />)
-    
+
     const link = screen.getByRole('link')
     expect(link).toHaveAttribute('href', `/artwork/${mockArtwork.id}`)
   })

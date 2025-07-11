@@ -24,7 +24,7 @@ const mockArtworks: Artwork[] = [
     inventoryNumber: 'NMK-001',
     era: '12세기',
     significance: '',
-    displayLocation: ''
+    displayLocation: '',
   },
   {
     id: 2,
@@ -46,14 +46,14 @@ const mockArtworks: Artwork[] = [
     inventoryNumber: 'NMK-002',
     era: '18세기',
     significance: '',
-    displayLocation: ''
-  }
+    displayLocation: '',
+  },
 ]
 
 describe('useArtworkFilter', () => {
   it('returns all artworks initially', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     expect(result.current.filteredArtworks).toHaveLength(2)
     expect(result.current.filters.searchTerm).toBe('')
     expect(result.current.filters.selectedCategory).toBe('전체')
@@ -61,77 +61,77 @@ describe('useArtworkFilter', () => {
 
   it('filters by search term', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSearchTerm('청자')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(1)
     expect(result.current.filteredArtworks[0].title).toContain('청자')
   })
 
   it('filters by category', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSelectedCategory('도자기')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(2)
   })
 
   it('filters by period', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSelectedPeriod('고려시대')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(1)
     expect(result.current.filteredArtworks[0].period).toBe('고려시대')
   })
 
   it('filters by museum', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSelectedMuseum('국립중앙박물관')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(2)
   })
 
   it('filters by cultural property grade', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSelectedGrade('국보')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(1)
     expect(result.current.filteredArtworks[0].culturalProperty).toBe('국보')
   })
 
   it('combines multiple filters', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSearchTerm('청자')
       result.current.actions.setSelectedPeriod('고려시대')
     })
-    
+
     expect(result.current.filteredArtworks).toHaveLength(1)
   })
 
   it('resets all filters', () => {
     const { result } = renderHook(() => useArtworkFilter(mockArtworks))
-    
+
     act(() => {
       result.current.actions.setSearchTerm('청자')
       result.current.actions.setSelectedCategory('도자기')
       result.current.actions.resetFilters()
     })
-    
+
     expect(result.current.filters.searchTerm).toBe('')
     expect(result.current.filters.selectedCategory).toBe('전체')
     expect(result.current.filteredArtworks).toHaveLength(2)

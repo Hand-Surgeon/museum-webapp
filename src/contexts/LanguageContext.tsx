@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react'
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react'
 import { Language, TranslationData, loadTranslation } from '../locales'
 import LoadingSpinner from '../components/LoadingSpinner'
 
@@ -35,7 +35,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     if (isInitialized) {
       setIsLoading(true)
     }
-    
+
     try {
       const translationData = await loadTranslation(lang)
       setTranslations(translationData)
@@ -69,60 +69,64 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     }
 
     initializeLanguage()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 언어 변경 시 localStorage에 저장 및 번역 데이터 로드
-  const handleLanguageChange = async (lang: Language) => {
+  const handleLanguageChange = useCallback(async (lang: Language) => {
     setLanguage(lang)
     localStorage.setItem('museum-language', lang)
     await loadLanguageData(lang)
-  }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 번역 함수 - 파라미터 치환 지원
-  const t = (key: string, params?: Record<string, string | number>): string => {
-    if (!translations) return key
+  const t = useCallback(
+    (key: string, params?: Record<string, string | number>): string => {
+      if (!translations) return key
 
-    const keys = key.split('.')
-    let value: unknown = translations
-    
-    for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k]
-      } else {
-        return key // 키를 그대로 반환
+      const keys = key.split('.')
+      let value: unknown = translations
+
+      for (const k of keys) {
+        if (value && typeof value === 'object' && k in value) {
+          value = (value as Record<string, unknown>)[k]
+        } else {
+          return key // 키를 그대로 반환
+        }
       }
-    }
-    
-    let result = typeof value === 'string' ? value : key
 
-    // 파라미터 치환 (예: {count} -> 실제 값)
-    if (params && typeof result === 'string') {
-      Object.entries(params).forEach(([paramKey, paramValue]) => {
-        result = result.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), String(paramValue))
-      })
-    }
+      let result = typeof value === 'string' ? value : key
 
-    return result
-  }
+      // 파라미터 치환 (예: {count} -> 실제 값)
+      if (params && typeof result === 'string') {
+        Object.entries(params).forEach(([paramKey, paramValue]) => {
+          result = result.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), String(paramValue))
+        })
+      }
+
+      return result
+    },
+    [translations]
+  )
+
+  const contextValue = useMemo(
+    () => ({
+      language,
+      setLanguage: handleLanguageChange,
+      t,
+      isLoading,
+    }),
+    [language, isLoading, handleLanguageChange, t]
+  )
 
   // 초기 로딩 중이면 로딩 스피너 표시
   if (!isInitialized || !translations) {
     return <LoadingSpinner message="언어 설정을 불러오는 중..." />
   }
 
-  const contextValue = useMemo(() => ({
-    language,
-    setLanguage: handleLanguageChange,
-    t,
-    isLoading
-  }), [language, isLoading, t, handleLanguageChange])
-
   return (
     <LanguageContext.Provider value={contextValue}>
       {children}
-      {isLoading && isInitialized && (
-        <LoadingSpinner message="언어를 변경하는 중..." />
-      )}
+      {isLoading && isInitialized && <LoadingSpinner message="언어를 변경하는 중..." />}
     </LanguageContext.Provider>
   )
 }

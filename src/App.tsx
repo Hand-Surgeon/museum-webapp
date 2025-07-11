@@ -18,7 +18,7 @@ function App() {
   usePerformanceMonitor()
   useFocusManagement()
   const { t } = useLanguage()
-  
+
   return (
     <ErrorBoundary>
       <div className="app">

@@ -15,22 +15,45 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
         process: 'readonly',
-        Buffer: 'readonly'
-      }
+        Buffer: 'readonly',
+        localStorage: 'readonly',
+        navigator: 'readonly',
+        performance: 'readonly',
+        PerformanceObserver: 'readonly',
+        PerformanceEntry: 'readonly',
+        PerformanceNavigationTiming: 'readonly',
+        IntersectionObserver: 'readonly',
+        Image: 'readonly',
+        HTMLImageElement: 'readonly',
+        HTMLElement: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
+        CustomEvent: 'readonly',
+        URLSearchParams: 'readonly',
+        URL: 'readonly',
+        btoa: 'readonly',
+        crypto: 'readonly',
+        React: 'readonly',
+        setInterval: 'readonly',
+        setTimeout: 'readonly',
+        clearInterval: 'readonly',
+        global: 'readonly',
+        beforeEach: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': typescript,
-      'react': react,
+      react: react,
       'react-hooks': reactHooks,
-      'prettier': prettier
+      prettier: prettier,
     },
     rules: {
       ...typescript.configs.recommended.rules,
@@ -40,15 +63,31 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn'
+      'react-hooks/exhaustive-deps': 'warn',
     },
     settings: {
       react: {
-        version: 'detect'
-      }
-    }
+        version: 'detect',
+      },
+    },
   },
   {
-    ignores: ['dist/', 'node_modules/', '*.config.js', '*.config.ts', 'scripts/']
-  }
+    files: ['src/**/*.test.{ts,tsx}', 'src/**/__tests__/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+      },
+    },
+  },
+  {
+    ignores: ['dist/', 'node_modules/', '*.config.js', '*.config.ts', 'scripts/'],
+  },
 ]

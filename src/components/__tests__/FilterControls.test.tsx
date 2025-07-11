@@ -5,7 +5,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 
 // Mock LanguageContext
 vi.mock('../../contexts/LanguageContext', () => ({
-  useLanguage: vi.fn()
+  useLanguage: vi.fn(),
 }))
 
 describe('FilterControls', () => {
@@ -15,7 +15,7 @@ describe('FilterControls', () => {
     setSelectedPeriod: vi.fn(),
     setSelectedMuseum: vi.fn(),
     setSelectedGrade: vi.fn(),
-    resetFilters: vi.fn()
+    resetFilters: vi.fn(),
   }
 
   const mockFilters = {
@@ -23,14 +23,16 @@ describe('FilterControls', () => {
     selectedCategory: '전체',
     selectedPeriod: '전체',
     selectedMuseum: '전체',
-    selectedGrade: '전체'
+    selectedGrade: '전체',
   }
 
   beforeEach(() => {
     vi.clearAllMocks()
-    ;(useLanguage as any).mockReturnValue({
+    vi.mocked(useLanguage).mockReturnValue({
       t: (key: string) => key,
-      language: 'ko'
+      language: 'ko',
+      setLanguage: vi.fn(),
+      isLoading: false,
     })
   })
 
@@ -97,7 +99,7 @@ describe('FilterControls', () => {
 
   it('toggles advanced filters', () => {
     const onToggle = vi.fn()
-    
+
     render(
       <FilterControls
         filters={mockFilters}

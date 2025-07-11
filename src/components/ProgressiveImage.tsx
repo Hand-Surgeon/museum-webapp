@@ -18,7 +18,7 @@ function ProgressiveImage({
   className = '',
   loading = 'lazy',
   onLoad,
-  onError
+  onError,
 }: ProgressiveImageProps) {
   const [imgSrc, setImgSrc] = useState(placeholderSrc || '')
   const [isLoading, setIsLoading] = useState(true)
@@ -26,7 +26,7 @@ function ProgressiveImage({
 
   useEffect(() => {
     const img = new Image()
-    
+
     const handleLoad = () => {
       setImgSrc(src)
       setIsLoading(false)
@@ -62,9 +62,7 @@ function ProgressiveImage({
         className={`progressive-image ${isLoading ? 'loading' : 'loaded'} ${isError ? 'error' : ''}`}
         onError={handleImageError}
       />
-      {isLoading && placeholderSrc && (
-        <div className="progressive-image-placeholder" />
-      )}
+      {isLoading && placeholderSrc && <div className="progressive-image-placeholder" />}
     </div>
   )
 }

@@ -8,7 +8,7 @@ export function getOptimizedImageUrl(
   // Supabase Storage URL인 경우 transform 파라미터 추가
   if (originalUrl.includes('supabase')) {
     const url = new URL(originalUrl)
-    
+
     if (width) {
       url.searchParams.set('width', width.toString())
     }
@@ -16,10 +16,10 @@ export function getOptimizedImageUrl(
       url.searchParams.set('height', height.toString())
     }
     url.searchParams.set('quality', quality.toString())
-    
+
     return url.toString()
   }
-  
+
   // 로컬 이미지는 그대로 반환
   return originalUrl
 }
@@ -32,28 +32,31 @@ export function getResponsiveImageSize(
   const dpr = window.devicePixelRatio || 1
   const width = Math.round(baseWidth * dpr)
   const height = baseHeight ? Math.round(baseHeight * dpr) : undefined
-  
+
   return { width, height }
 }
 
 // 뷰포트 크기에 따른 이미지 크기 결정
-export function getImageSizeForViewport(type: 'card' | 'detail' | 'thumbnail'): { width: number; height?: number } {
+export function getImageSizeForViewport(type: 'card' | 'detail' | 'thumbnail'): {
+  width: number
+  height?: number
+} {
   const vw = window.innerWidth
-  
+
   switch (type) {
     case 'thumbnail':
       return { width: 100, height: 100 }
-      
+
     case 'card':
       if (vw < 640) return { width: 300 }
       if (vw < 1024) return { width: 400 }
       return { width: 500 }
-      
+
     case 'detail':
       if (vw < 640) return { width: 600 }
       if (vw < 1024) return { width: 800 }
       return { width: 1200 }
-      
+
     default:
       return { width: 400 }
   }
@@ -67,9 +70,7 @@ export function generatePlaceholder(width: number = 10, height: number = 10): st
 
 // srcset 생성
 export function generateSrcSet(baseUrl: string, sizes: number[]): string {
-  return sizes
-    .map(size => `${getOptimizedImageUrl(baseUrl, size)} ${size}w`)
-    .join(', ')
+  return sizes.map((size) => `${getOptimizedImageUrl(baseUrl, size)} ${size}w`).join(', ')
 }
 
 // 이미지 프리로드
