@@ -85,22 +85,30 @@ export interface TranslationData {
 import koTranslation from './ko.json'
 
 export const loadTranslation = async (language: Language): Promise<TranslationData> => {
+  // Add timeout to prevent infinite hangs
+  const loadWithTimeout = async (promise: Promise<TranslationData>, timeoutMs = 5000) => {
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Translation load timeout')), timeoutMs)
+    )
+    return Promise.race([promise, timeout])
+  }
+
   try {
     switch (language) {
       case 'ko':
         // 한국어는 이미 로드된 상태이므로 즉시 반환
         return koTranslation
       case 'en':
-        return (await import('./en.json')).default
+        return await loadWithTimeout(import('./en.json').then((m) => m.default as TranslationData))
       case 'zh':
-        return (await import('./zh.json')).default
+        return await loadWithTimeout(import('./zh.json').then((m) => m.default as TranslationData))
       case 'ja':
-        return (await import('./ja.json')).default
+        return await loadWithTimeout(import('./ja.json').then((m) => m.default as TranslationData))
       default:
         return koTranslation
     }
-  } catch {
-    console.warn(`Failed to load translation for ${language}, falling back to Korean`)
+  } catch (error) {
+    console.warn(`Failed to load translation for ${language}, falling back to Korean:`, error)
     return koTranslation
   }
 }

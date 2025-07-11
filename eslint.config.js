@@ -47,6 +47,8 @@ export default [
         clearInterval: 'readonly',
         global: 'readonly',
         beforeEach: 'readonly',
+        EventTarget: 'readonly',
+        EventListener: 'readonly',
       },
     },
     plugins: {

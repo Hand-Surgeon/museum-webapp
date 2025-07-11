@@ -5,9 +5,9 @@ import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
 import LoadingSpinner from './components/LoadingSpinner'
 import { useLanguage } from './contexts/LanguageContext'
-import { usePerformanceMonitor } from './hooks/usePerformanceMonitor'
 import { useFocusManagement } from './hooks/useFocusManagement'
 import PerformanceIndicator from './components/PerformanceIndicator'
+import DiagnosticsPanel from './components/DiagnosticsPanel'
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'))
@@ -15,7 +15,8 @@ const Gallery = lazy(() => import('./pages/Gallery'))
 const ArtworkDetail = lazy(() => import('./pages/ArtworkDetail'))
 
 function App() {
-  usePerformanceMonitor()
+  // Temporarily disable performance monitoring to isolate issues
+  // usePerformanceMonitor()
   useFocusManagement()
   const { t } = useLanguage()
 
@@ -37,6 +38,7 @@ function App() {
         </main>
         <Footer />
         <PerformanceIndicator />
+        {import.meta.env.DEV && <DiagnosticsPanel />}
       </div>
     </ErrorBoundary>
   )

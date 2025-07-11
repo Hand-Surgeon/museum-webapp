@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react'
 import { Language, TranslationData, loadTranslation } from '../locales'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { debugLog, debugError } from '../utils/debug'
 
 interface LanguageContextType {
   language: Language
@@ -31,6 +32,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   // 번역 데이터 로드
   const loadLanguageData = async (lang: Language) => {
+    debugLog(`Loading language data for: ${lang}`)
+
     // 초기 로딩이 아닌 경우에만 로딩 상태 표시
     if (isInitialized) {
       setIsLoading(true)
@@ -38,23 +41,40 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     try {
       const translationData = await loadTranslation(lang)
+      debugLog(`Successfully loaded translation for ${lang}`, translationData)
       setTranslations(translationData)
     } catch (error) {
-      console.error(`Failed to load translation for ${lang}:`, error)
+      debugError(`Failed to load translation for ${lang}`, error)
+      // Fallback to Korean if loading fails
+      try {
+        const fallbackData = await loadTranslation('ko')
+        debugLog('Loaded fallback Korean translation')
+        setTranslations(fallbackData)
+      } catch (fallbackError) {
+        debugError('Failed to load fallback translation', fallbackError)
+        // Set empty translations to prevent infinite loading
+        setTranslations({} as TranslationData)
+      }
     } finally {
       setIsLoading(false)
       setIsInitialized(true)
+      debugLog(
+        `Language initialization complete. isInitialized: true, hasTranslations: ${!!translations}`
+      )
     }
   }
 
   // 브라우저 언어 감지 및 localStorage에서 저장된 언어 불러오기
   useEffect(() => {
     const initializeLanguage = async () => {
+      debugLog('Starting language initialization')
+
       const savedLanguage = localStorage.getItem('museum-language') as Language
       let targetLanguage: Language = 'ko'
 
       if (savedLanguage && ['ko', 'en', 'zh', 'ja'].includes(savedLanguage)) {
         targetLanguage = savedLanguage
+        debugLog(`Using saved language: ${savedLanguage}`)
       } else {
         // 브라우저 언어 감지
         const browserLang = navigator.language.toLowerCase()
@@ -62,13 +82,16 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         else if (browserLang.startsWith('zh')) targetLanguage = 'zh'
         else if (browserLang.startsWith('ja')) targetLanguage = 'ja'
         else targetLanguage = 'ko'
+        debugLog(`Detected browser language: ${browserLang}, using: ${targetLanguage}`)
       }
 
       setLanguage(targetLanguage)
       await loadLanguageData(targetLanguage)
     }
 
-    initializeLanguage()
+    initializeLanguage().catch((error) => {
+      debugError('Failed to initialize language', error)
+    })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 언어 변경 시 localStorage에 저장 및 번역 데이터 로드
@@ -119,8 +142,24 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   )
 
   // 초기 로딩 중이면 로딩 스피너 표시
-  if (!isInitialized || !translations) {
+  if (!isInitialized) {
     return <LoadingSpinner message="언어 설정을 불러오는 중..." />
+  }
+
+  // If translations failed to load, show error state
+  if (!translations || Object.keys(translations).length === 0) {
+    return (
+      <div className="error-container" style={{ padding: '2rem', textAlign: 'center' }}>
+        <h1>언어 파일을 불러올 수 없습니다</h1>
+        <p>페이지를 새로고침해주세요.</p>
+        <button
+          onClick={() => window.location.reload()}
+          style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
+        >
+          새로고침
+        </button>
+      </div>
+    )
   }
 
   return (

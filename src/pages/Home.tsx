@@ -53,7 +53,11 @@ function Home() {
         <div className="container">
           <h1>{t('home.welcomeTitle')}</h1>
           <p>{t('home.welcomeDescription')}</p>
-          <Link to="/gallery" className="btn btn-primary">
+          <Link
+            to="/gallery"
+            className="btn btn-primary"
+            onClick={() => console.log('Gallery link clicked')}
+          >
             {t('home.viewAllWorks')}
           </Link>
         </div>

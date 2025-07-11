@@ -15,12 +15,18 @@ declare global {
   interface Window {
     gtag?: (command: string, action: string, parameters: Record<string, unknown>) => void
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface EventTarget {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface EventListener {}
 }
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor
   private metrics: PerformanceMetric[] = []
   private isEnabled: boolean
+  private observers: PerformanceObserver[] = []
+  private eventListeners: Array<{ element: EventTarget; type: string; handler: EventListener }> = []
 
   private constructor() {
     this.isEnabled = import.meta.env['VITE_ENABLE_PERFORMANCE_MONITORING'] === 'true'
@@ -35,6 +41,9 @@ export class PerformanceMonitor {
 
   measureWebVitals(): void {
     if (!this.isEnabled || typeof window === 'undefined') return
+
+    // Clean up any existing observers first
+    this.cleanup()
 
     // First Contentful Paint (FCP)
     this.observePaint('first-contentful-paint', 'FCP', {
@@ -61,90 +70,116 @@ export class PerformanceMonitor {
     thresholds: { good: number; poor: number }
   ): void {
     if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.name === entryType) {
-            const value = entry.startTime
-            const rating = this.getRating(value, thresholds.good, thresholds.poor)
-            this.addMetric({
-              name: metricName,
-              value,
-              rating,
-              timestamp: Date.now(),
-            })
+      try {
+        const observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            if (entry.name === entryType) {
+              const value = entry.startTime
+              const rating = this.getRating(value, thresholds.good, thresholds.poor)
+              this.addMetric({
+                name: metricName,
+                value,
+                rating,
+                timestamp: Date.now(),
+              })
+            }
           }
-        }
-      })
-      observer.observe({ entryTypes: ['paint'] })
+        })
+        observer.observe({ entryTypes: ['paint'] })
+        this.observers.push(observer)
+      } catch {
+        console.warn('Failed to observe paint metrics')
+      }
     }
   }
 
   private observeLCP(): void {
     if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        const entries = list.getEntries()
-        const lastEntry = entries[entries.length - 1]
-        const value = lastEntry.startTime
-        const rating = this.getRating(value, 2500, 4000)
-        this.addMetric({
-          name: 'LCP',
-          value,
-          rating,
-          timestamp: Date.now(),
-        })
-        observer.disconnect()
-      })
-      observer.observe({ entryTypes: ['largest-contentful-paint'] })
-    }
-  }
-
-  private observeFID(): void {
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          const value = entry.processingStart - entry.startTime
-          const rating = this.getRating(value, 100, 300)
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries()
+          const lastEntry = entries[entries.length - 1]
+          const value = lastEntry.startTime
+          const rating = this.getRating(value, 2500, 4000)
           this.addMetric({
-            name: 'FID',
+            name: 'LCP',
             value,
             rating,
             timestamp: Date.now(),
           })
           observer.disconnect()
-        }
-      })
-      observer.observe({ entryTypes: ['first-input'] })
+        })
+        observer.observe({ entryTypes: ['largest-contentful-paint'] })
+        this.observers.push(observer)
+      } catch {
+        console.warn('Failed to observe LCP metrics')
+      }
+    }
+  }
+
+  private observeFID(): void {
+    if ('PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            const value = entry.processingStart - entry.startTime
+            const rating = this.getRating(value, 100, 300)
+            this.addMetric({
+              name: 'FID',
+              value,
+              rating,
+              timestamp: Date.now(),
+            })
+            observer.disconnect()
+          }
+        })
+        observer.observe({ entryTypes: ['first-input'] })
+        this.observers.push(observer)
+      } catch {
+        console.warn('Failed to observe FID metrics')
+      }
     }
   }
 
   private observeCLS(): void {
     if ('PerformanceObserver' in window) {
-      let clsValue = 0
-      let clsEntries: PerformanceEntry[] = []
+      try {
+        let clsValue = 0
+        let clsEntries: PerformanceEntry[] = []
 
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          const layoutShiftEntry = entry as LayoutShiftEntry
-          if (!layoutShiftEntry.hadRecentInput) {
-            clsEntries.push(entry)
-            clsValue += layoutShiftEntry.value
+        const observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            const layoutShiftEntry = entry as LayoutShiftEntry
+            if (!layoutShiftEntry.hadRecentInput) {
+              clsEntries.push(entry)
+              clsValue += layoutShiftEntry.value
+            }
+          }
+        })
+        observer.observe({ entryTypes: ['layout-shift'] })
+        this.observers.push(observer)
+
+        // Report CLS when page is hidden
+        const handleVisibilityChange = () => {
+          if (document.visibilityState === 'hidden') {
+            const rating = this.getRating(clsValue, 0.1, 0.25)
+            this.addMetric({
+              name: 'CLS',
+              value: clsValue,
+              rating,
+              timestamp: Date.now(),
+            })
           }
         }
-      })
-      observer.observe({ entryTypes: ['layout-shift'] })
-
-      // Report CLS when page is hidden
-      window.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') {
-          const rating = this.getRating(clsValue, 0.1, 0.25)
-          this.addMetric({
-            name: 'CLS',
-            value: clsValue,
-            rating,
-            timestamp: Date.now(),
-          })
-        }
-      })
+        window.addEventListener('visibilitychange', handleVisibilityChange)
+        this.eventListeners.push({
+          element: window,
+          type: 'visibilitychange',
+          handler: handleVisibilityChange,
+        })
+      } catch {
+        console.warn('Failed to observe CLS metrics')
+      }
     }
   }
 
@@ -243,5 +278,27 @@ export class PerformanceMonitor {
         console.warn(`⚠️ Slow render detected for ${componentName}: ${renderTime.toFixed(2)}ms`)
       }
     }
+  }
+
+  cleanup(): void {
+    // Disconnect all observers
+    this.observers.forEach((observer) => {
+      try {
+        observer.disconnect()
+      } catch {
+        // Ignore errors during cleanup
+      }
+    })
+    this.observers = []
+
+    // Remove all event listeners
+    this.eventListeners.forEach(({ element, type, handler }) => {
+      try {
+        element.removeEventListener(type, handler)
+      } catch {
+        // Ignore errors during cleanup
+      }
+    })
+    this.eventListeners = []
   }
 }
