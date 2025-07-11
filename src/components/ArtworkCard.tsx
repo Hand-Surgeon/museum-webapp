@@ -16,7 +16,7 @@ export default function ArtworkCard({ artwork }: ArtworkCardProps) {
       <Link to={`/artwork/${artwork.id}`}>
         <div className="artwork-image-wrapper">
           <img
-            src={getImageUrl(artwork.imageUrl, artwork.category)}
+            src={getImageUrl(artwork.imageUrl, artwork.category, artwork.title)}
             alt={artwork.title}
             loading="lazy"
             onError={(e) => handleImageError(e, artwork.category)}

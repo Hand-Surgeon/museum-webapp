@@ -2,6 +2,8 @@
  * 안정적인 이미지 처리를 위한 유틸리티 함수들
  */
 
+import { getImagePath } from './imageMapping';
+
 // 카테고리별 로컬 플레이스홀더 이미지 매핑
 const getCategoryPlaceholder = (category: string): string => {
   const categoryMap: Record<string, string> = {
@@ -20,9 +22,17 @@ const getCategoryPlaceholder = (category: string): string => {
   return categoryMap[category] || './images/placeholder-default.svg';
 };
 
-// 메인 이미지 URL 처리 함수 - 안전한 로컬 이미지만 사용
-export const getImageUrl = (originalUrl: string, category: string): string => {
-  // Wikipedia나 안정적인 도메인의 이미지만 허용
+// 메인 이미지 URL 처리 함수 - 로컬 이미지 우선, 안전한 외부 이미지 차선
+export const getImageUrl = (originalUrl: string, category: string, title?: string): string => {
+  // 제목이 있으면 먼저 로컬 이미지 매핑 확인
+  if (title) {
+    const localImagePath = getImagePath(title);
+    if (localImagePath) {
+      return localImagePath;
+    }
+  }
+  
+  // Wikipedia나 안정적인 도메인의 이미지 확인
   const trustedDomains = [
     'upload.wikimedia.org',
     'commons.wikimedia.org'
@@ -35,7 +45,7 @@ export const getImageUrl = (originalUrl: string, category: string): string => {
     return originalUrl;
   }
   
-  // 신뢰할 수 없는 URL이거나 외부 URL은 즉시 플레이스홀더 사용
+  // 신뢰할 수 없는 URL이거나 외부 URL은 플레이스홀더 사용
   return getCategoryPlaceholder(category);
 };
 

@@ -61,7 +61,7 @@ function ArtworkDetail() {
         <div className="artwork-detail-content">
           <div>
             <img 
-              src={getImageUrl(artwork.imageUrl, artwork.category)} 
+              src={getImageUrl(artwork.imageUrl, artwork.category, artwork.title)} 
               alt={artwork.title}
               className="artwork-detail-image"
               onError={(e) => handleImageError(e, artwork.category)}
