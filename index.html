@@ -9,7 +9,6 @@
     <meta name="theme-color" content="#1a1a1a" />
     
     <!-- PWA -->
-    <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     
     <!-- Favicons -->
@@ -38,8 +37,6 @@
     
     <!-- Security headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     
     <title>국립중앙박물관 - 디지털 갤러리</title>
@@ -70,8 +67,8 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Register service worker
-      if ('serviceWorker' in navigator) {
+      // Register service worker only in production
+      if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then(registration => console.log('SW registered:', registration))
