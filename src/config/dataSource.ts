@@ -11,4 +11,4 @@ export const DATA_SOURCE = {
 } as const
 
 export const isUsingSupabase = () => DATA_SOURCE.type === 'supabase'
-export const isUsingLocal = () => DATA_SOURCE.type === 'local'
+export const isUsingLocal = () => DATA_SOURCE.type === 'local' || DATA_SOURCE.type === 'json'
